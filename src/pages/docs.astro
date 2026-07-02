@@ -1,0 +1,68 @@
+---
+import { PaperArtifactLink, PaperBaseLayout, PaperContentIndex } from "paper-pure/components";
+import { site } from "../site.config";
+
+const docs = [
+  {
+    title: "Blog posts",
+    description: "Technical posts organized by source folders, with stable public slugs.",
+    children: [
+      { title: "Markdown feature sample", href: "/posts/markdown-feature-sample/" },
+      {
+        title: "Telecom notes",
+        description: "Folder metadata comes from _index.md.",
+        children: [
+          { title: "Folder tags for nested posts", href: "/posts/folder-tags-demo/" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Theme examples",
+    description: "Small pages that exercise paper-pure components and markdown support.",
+    children: [
+      { title: "Projects", href: "/projects/" },
+      { title: "Notes", href: "/notes/" },
+      { title: "Timeline", href: "/timeline/" },
+    ],
+  },
+];
+---
+
+<PaperBaseLayout
+  title={`Docs | ${site.title}`}
+  description={site.description}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-hero">
+    <h1>Docs</h1>
+    <p class="paper-description">A small Pure-style content index for the current blog structure.</p>
+  </section>
+
+  <PaperContentIndex items={docs} />
+
+  <section class="paper-section">
+    <h2>Linked diagram sources</h2>
+    <PaperArtifactLink
+      type="mermaid"
+      href="/diagrams/theme-flow.mmd"
+      label="Mermaid source"
+      description="Use this when the source file is more useful than inline rendering."
+    />
+    <PaperArtifactLink
+      type="plantuml"
+      href="/diagrams/call-flow.puml"
+      label="PlantUML source"
+      description="A small manual link until the theme has a real PlantUML markdown plugin."
+    />
+    <PaperArtifactLink
+      type="excalidraw"
+      href="/diagrams/sketch.excalidraw"
+      label="Excalidraw sketch"
+      description="Keep the editable diagram file next to the article or public asset."
+    />
+  </section>
+</PaperBaseLayout>

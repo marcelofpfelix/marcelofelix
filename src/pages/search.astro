@@ -1,0 +1,98 @@
+---
+import { getCollection } from "astro:content";
+import { PaperBaseLayout } from "paper-pure";
+import { getAllTags, postHref, postTags, publishedPosts, sortPosts } from "paper-pure/utils";
+import { site } from "../site.config";
+
+const allPosts = publishedPosts(await getCollection("posts"));
+const tags = getAllTags(allPosts);
+const counts = Object.fromEntries(
+  tags.map(tag => [tag, allPosts.filter(post => postTags(post).includes(tag)).length])
+);
+const posts = sortPosts(allPosts).map((post) => ({
+  title: post.data.title,
+  description: post.data.description ?? "",
+  href: postHref(post),
+  tags: postTags(post),
+  date: new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  }).format(post.data.pubDatetime),
+}));
+---
+
+<PaperBaseLayout
+  title={`Search | ${site.title}`}
+  description="Search blog posts by title, description, or tag."
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-search">
+    <h1>Search</h1>
+    <label>
+      Search posts
+      <input type="search" placeholder="Try astro, theme, search..." data-paper-search />
+    </label>
+    <div class="paper-search-tags" aria-label="Tags">
+      {
+        tags.map(tag => (
+          <button type="button" data-paper-search-tag={tag}>
+            <span>#{tag}</span>
+            <small>{counts[tag]}</small>
+          </button>
+        ))
+      }
+    </div>
+    <ul class="paper-post-list" data-paper-search-results></ul>
+  </section>
+</PaperBaseLayout>
+
+<script is:inline define:vars={{ posts }}>
+  const input = document.querySelector("[data-paper-search]");
+  const results = document.querySelector("[data-paper-search-results]");
+  const tagButtons = document.querySelectorAll("[data-paper-search-tag]");
+
+  function postText(post) {
+    return [post.title, post.description, ...post.tags].join(" ").toLowerCase();
+  }
+
+  function render(query = "") {
+    const normalized = query.trim().toLowerCase();
+    const matches = normalized
+      ? posts.filter((post) => postText(post).includes(normalized))
+      : posts;
+
+    results.innerHTML = matches.length
+      ? matches
+          .map((post) => {
+        const tags = post.tags.length ? ` · ${post.tags.map(tag => `#${tag}`).join(", ")}` : "";
+        return `
+          <li class="paper-post-item">
+            <a href="${post.href}">
+              <span class="paper-post-title">${post.title}</span>
+              <span class="paper-post-description">${post.description}</span>
+              <span class="paper-post-meta">${post.date}${tags}</span>
+            </a>
+          </li>
+        `;
+      })
+      .join("")
+      : `<li class="paper-search-empty">No posts found.</li>`;
+  }
+
+  input?.addEventListener("input", (event) => render(event.currentTarget.value));
+  tagButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      input.value = button.dataset.paperSearchTag;
+      render(input.value);
+      input.focus();
+    });
+  });
+
+  const initial = new URLSearchParams(window.location.search).get("tag") ?? "";
+  if (initial && input) input.value = initial;
+  render(input?.value ?? "");
+</script>

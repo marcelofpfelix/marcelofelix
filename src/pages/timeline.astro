@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import { PaperArchiveList, PaperBaseLayout } from "paper-pure/components";
+import { publishedPosts } from "paper-pure/utils";
+import { site } from "../site.config";
+
+const posts = publishedPosts(await getCollection("posts"));
+---
+
+<PaperBaseLayout
+  title={`Timeline | ${site.title}`}
+  description={site.description}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-hero">
+    <h1>Timeline</h1>
+    <p class="paper-description">All published posts by year.</p>
+  </section>
+
+  <PaperArchiveList posts={posts} />
+</PaperBaseLayout>

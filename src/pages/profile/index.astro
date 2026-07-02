@@ -1,0 +1,392 @@
+---
+import { PaperBaseLayout, PaperGithubCard, PaperTimeline } from "paper-pure/components";
+import { cvSections, profile, profileProjects, timelineEvents } from "../../data/profile";
+import { site } from "../../site.config";
+
+function cvIcon(name: string) {
+  const icons: Record<string, string> = {
+    award: `<circle cx="12" cy="8" r="5"></circle><path d="M8.5 12.5 7 22l5-3 5 3-1.5-9.5"></path>`,
+    briefcase: `<rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>`,
+    hands: `<path d="M7 11v4a4 4 0 0 0 8 0v-4"></path><path d="M5 11h14"></path><path d="M9 7V4"></path><path d="M15 7V4"></path>`,
+    repo: `<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>`,
+    school: `<path d="m22 10-10-5-10 5 10 5 10-5Z"></path><path d="M6 12v5c3 2 9 2 12 0v-5"></path>`,
+    timeline: `<path d="M12 8v4l3 2"></path><circle cx="12" cy="12" r="9"></circle>`,
+    tools: `<path d="m14.7 6.3 3-3a3.5 3.5 0 0 1-4.9 4.9l-6.6 6.6a2 2 0 1 0 2.8 2.8l6.6-6.6a3.5 3.5 0 0 1 4.9-4.9l-3 3"></path>`,
+    university: `<path d="m3 10 9-6 9 6"></path><path d="M5 10h14"></path><path d="M6 10v8"></path><path d="M10 10v8"></path><path d="M14 10v8"></path><path d="M18 10v8"></path><path d="M4 18h16"></path>`,
+    user: `<circle cx="12" cy="8" r="4"></circle><path d="M4 22a8 8 0 0 1 16 0"></path>`,
+  };
+
+  return icons[name] ?? icons.user;
+}
+---
+
+<PaperBaseLayout
+  title={`Profile | ${site.title}`}
+  description={profile.summary}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="cv-shell">
+    <aside class="cv-sidebar">
+      <img src={profile.avatar} alt={profile.name} />
+      <h1>{profile.name}</h1>
+      <p>{profile.headline}</p>
+
+      <section>
+        <h2>Contact</h2>
+        <p>{profile.email}</p>
+        <nav>
+          {profile.links.map(link => <a href={link.href}>{link.label}</a>)}
+        </nav>
+      </section>
+
+      <section>
+        <h2>Info</h2>
+        <dl>
+          {profile.meta.map(item => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <a class="cv-print-action" href="/profile/print/">Print / save A4 CV</a>
+    </aside>
+
+    <div class="cv-main">
+      <p class="cv-updated">
+        You can find this CV always updated at <a href={profile.canonicalCv}>{profile.canonicalCv.replace("https://", "")}</a>.
+      </p>
+
+      <div class="cv-template-tabs" role="tablist" aria-label="Profile templates">
+        <button type="button" role="tab" aria-selected="true" data-cv-tab="resume">Resume</button>
+        <button type="button" role="tab" aria-selected="false" data-cv-tab="timeline">Timeline</button>
+        <button type="button" role="tab" aria-selected="false" data-cv-tab="projects">Projects</button>
+        <button type="button" role="tab" aria-selected="false" data-cv-tab="a4">A4 CV</button>
+      </div>
+
+      <section class="cv-template-panel" data-cv-panel="resume">
+        {cvSections.map(section => (
+          <section class="cv-section" id={section.id}>
+            <h2><span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon(section.icon)} /></span>{section.title}</h2>
+            {section.groups.map(group => (
+              <article class="cv-group">
+                {group.entity && (
+                  <a class="cv-entity" href={group.url}>
+                    {group.logo && <img src={group.logo} alt="" loading="lazy" />}
+                    <strong>{group.entity}</strong>
+                  </a>
+                )}
+                {group.items.map(item => (
+                  <section class="cv-item">
+                    <header>
+                      <h3>{item.title}</h3>
+                      {(item.location || item.dates) && (
+                        <p>{[item.location, item.dates].filter(Boolean).join(" , ")}</p>
+                      )}
+                    </header>
+                    {item.description && <div class="cv-description" set:html={item.description} />}
+                  </section>
+                ))}
+              </article>
+            ))}
+          </section>
+        ))}
+      </section>
+
+      <section class="cv-template-panel" data-cv-panel="timeline" hidden>
+        <section class="cv-section">
+          <h2><span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon("timeline")} /></span>Timeline</h2>
+          <PaperTimeline events={timelineEvents.slice(0, 9)} />
+        </section>
+      </section>
+
+      <section class="cv-template-panel" data-cv-panel="projects" hidden>
+        <section class="cv-section">
+          <h2><span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon("repo")} /></span>Projects</h2>
+          <div class="cv-repo-grid">
+            {profileProjects.map(project => (
+              <PaperGithubCard repo={project.repo} description={project.description} />
+            ))}
+          </div>
+        </section>
+      </section>
+
+      <section class="cv-template-panel" data-cv-panel="a4" hidden>
+        <section class="cv-section cv-a4-panel">
+          <h2><span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon("user")} /></span>A4 CV</h2>
+          <p>This print template reuses the same profile data as the web profile and keeps the old jekyllcv A4 shape available.</p>
+          <p class="paper-actions paper-actions-split">
+            <a href="/profile/print/">Open printable A4 CV</a>
+            <a href={profile.canonicalCv}>Original CV</a>
+          </p>
+        </section>
+      </section>
+    </div>
+  </section>
+</PaperBaseLayout>
+
+<script>
+  function bindCvTabs() {
+    const tabs = Array.from(document.querySelectorAll<HTMLElement>("[data-cv-tab]"));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-cv-panel]"));
+    const activate = (name: string) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.cvTab === name;
+        tab.setAttribute("aria-selected", String(active));
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.cvPanel !== name;
+      });
+    };
+
+    tabs.forEach((tab) => {
+      if (tab.dataset.cvBound) return;
+      tab.dataset.cvBound = "true";
+      tab.addEventListener("click", () => activate(tab.dataset.cvTab ?? "resume"));
+    });
+  }
+
+  bindCvTabs();
+  document.addEventListener("astro:page-load", bindCvTabs);
+</script>
+
+<style>
+  .cv-shell {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .cv-sidebar {
+    align-self: start;
+    background: var(--paper-panel);
+    border: 1px solid var(--paper-border);
+    border-radius: var(--paper-radius);
+    display: grid;
+    gap: 18px;
+    padding: 18px;
+    position: sticky;
+    top: 92px;
+  }
+
+  .cv-sidebar img {
+    aspect-ratio: 1;
+    border: 2px solid var(--paper-border);
+    border-radius: 999px;
+    object-fit: cover;
+    width: 96px;
+  }
+
+  .cv-sidebar h1 {
+    color: var(--paper-accent);
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    letter-spacing: 0;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .cv-sidebar h2 {
+    color: var(--paper-accent);
+    font-size: 1rem;
+    margin: 0 0 8px;
+  }
+
+  .cv-sidebar p {
+    margin: 0;
+  }
+
+  .cv-sidebar nav {
+    display: grid;
+    gap: 6px;
+  }
+
+  .cv-sidebar a,
+  .cv-updated a {
+    color: var(--paper-accent);
+    text-decoration: none;
+  }
+
+  .cv-sidebar dl {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .cv-sidebar dt {
+    color: var(--paper-muted);
+    font-family: var(--paper-font-mono);
+    font-size: 0.75rem;
+  }
+
+  .cv-sidebar dd {
+    margin: 0;
+  }
+
+  .cv-print-action {
+    border: 1px solid var(--paper-border);
+    border-radius: 6px;
+    color: var(--paper-muted) !important;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .cv-print-action:hover {
+    border-color: var(--paper-accent);
+    color: var(--paper-accent) !important;
+  }
+
+  .cv-main {
+    min-width: 0;
+  }
+
+  .cv-updated {
+    background: color-mix(in srgb, var(--paper-accent) 9%, var(--paper-panel));
+    border-radius: var(--paper-radius);
+    margin: 0 0 28px;
+    padding: 10px 12px;
+  }
+
+  .cv-template-tabs {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .cv-template-tabs button {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--paper-border);
+    border-radius: 6px;
+    color: var(--paper-muted);
+    cursor: pointer;
+    font: 600 0.86rem/1 var(--paper-font-sans);
+    min-height: 40px;
+    padding: 8px 11px;
+  }
+
+  .cv-template-tabs button:hover,
+  .cv-template-tabs button:focus-visible,
+  .cv-template-tabs button[aria-selected="true"] {
+    border-color: var(--paper-accent);
+    color: var(--paper-accent);
+    outline: none;
+  }
+
+  .cv-template-panel[hidden] {
+    display: none;
+  }
+
+  .cv-section {
+    border-top: 1px solid var(--paper-border);
+    padding: 24px 0;
+  }
+
+  .cv-section h2 {
+    align-items: center;
+    color: var(--paper-accent);
+    display: flex;
+    font-size: 1.35rem;
+    gap: 10px;
+    margin: 0 0 14px;
+  }
+
+  .cv-section h2 span {
+    align-items: center;
+    color: var(--paper-muted);
+    display: inline-flex;
+  }
+
+  .cv-section h2 svg {
+    fill: none;
+    height: 1em;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 1em;
+  }
+
+  .cv-group + .cv-group {
+    margin-top: 18px;
+  }
+
+  .cv-entity {
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    text-decoration: none;
+  }
+
+  .cv-entity img {
+    border-radius: 5px;
+    height: 36px;
+    object-fit: contain;
+    width: 36px;
+  }
+
+  .cv-item + .cv-item {
+    margin-top: 10px;
+  }
+
+  .cv-item header {
+    align-items: baseline;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .cv-item h3,
+  .cv-item p {
+    margin: 0;
+  }
+
+  .cv-item header p {
+    color: var(--paper-muted);
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  .cv-description {
+    margin-top: 6px;
+  }
+
+  .cv-description :global(ul) {
+    margin: 8px 0 0;
+    padding-left: 18px;
+  }
+
+  .cv-repo-grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .cv-a4-panel p {
+    margin: 0 0 12px;
+  }
+
+  @media (max-width: 780px) {
+    .cv-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .cv-sidebar {
+      position: static;
+    }
+
+    .cv-item header {
+      display: block;
+    }
+
+    .cv-item header p {
+      text-align: left;
+    }
+  }
+</style>

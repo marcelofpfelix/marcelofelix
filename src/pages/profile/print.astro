@@ -1,0 +1,320 @@
+---
+import { cvSections, profile } from "../../data/profile";
+
+const pages = [1, 2] as const;
+
+function cvIcon(name: string) {
+  const icons: Record<string, string> = {
+    award: `<circle cx="12" cy="8" r="5"></circle><path d="M8.5 12.5 7 22l5-3 5 3-1.5-9.5"></path>`,
+    briefcase: `<rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>`,
+    hands: `<path d="M7 11v4a4 4 0 0 0 8 0v-4"></path><path d="M5 11h14"></path><path d="M9 7V4"></path><path d="M15 7V4"></path>`,
+    school: `<path d="m22 10-10-5-10 5 10 5 10-5Z"></path><path d="M6 12v5c3 2 9 2 12 0v-5"></path>`,
+    tools: `<path d="m14.7 6.3 3-3a3.5 3.5 0 0 1-4.9 4.9l-6.6 6.6a2 2 0 1 0 2.8 2.8l6.6-6.6a3.5 3.5 0 0 1 4.9-4.9l-3 3"></path>`,
+    university: `<path d="m3 10 9-6 9 6"></path><path d="M5 10h14"></path><path d="M6 10v8"></path><path d="M10 10v8"></path><path d="M14 10v8"></path><path d="M18 10v8"></path><path d="M4 18h16"></path>`,
+    user: `<circle cx="12" cy="8" r="4"></circle><path d="M4 22a8 8 0 0 1 16 0"></path>`,
+  };
+
+  return icons[name] ?? icons.user;
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`Printable CV for ${profile.name}`} />
+    <title>{profile.name} - Printable CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.min.css" />
+  </head>
+  <body class="A4">
+    <div class="no-print cv-download">
+      You can also <a href="javascript:window.print()">Print or Save it as PDF</a>.
+    </div>
+
+    {pages.map(page => (
+      <section class="sheet padding-10mm">
+        <article class="print-cv">
+          {page === 1 && (
+            <>
+              <header class="print-profile">
+                <div class="print-avatar">
+                  <img src={profile.avatar} alt={profile.name} />
+                  <h1>{profile.name}</h1>
+                  <p>{profile.headline}</p>
+                </div>
+                <div class="print-profile-details">
+                  <section>
+                    <h2>Contact</h2>
+                    <p>{profile.email}</p>
+                    {profile.links.map(link => <p><a href={link.href}>{link.label.replace("bandonga.com", "bandonga.com")}</a></p>)}
+                  </section>
+                  <section>
+                    <h2>Info</h2>
+                    {profile.meta.map(item => <p><strong>{item.label}</strong> {item.value}</p>)}
+                  </section>
+                </div>
+              </header>
+              <p class="print-info">You can find this CV always updated at <a href={profile.canonicalCv}>bandonga.com/cv/marcelo</a>.</p>
+            </>
+          )}
+
+          {cvSections.filter(section => section.page === page).map(section => (
+            <section class="print-section">
+              <h2><span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon(section.icon)} /></span>{section.title}</h2>
+              {section.groups.map(group => (
+                <article class="print-group">
+                  {group.entity && (
+                    <a class="print-entity" href={group.url}>
+                      {group.logo && <img src={group.logo} alt="" />}
+                      <strong>{group.entity}</strong>
+                    </a>
+                  )}
+                  {group.items.map(item => (
+                    <section class="print-item">
+                      <header>
+                        <h3>{item.title}</h3>
+                        {(item.location || item.dates) && (
+                          <p>{[item.location, item.dates].filter(Boolean).join(" , ")}</p>
+                        )}
+                      </header>
+                      {item.description && <div class="print-description" set:html={item.description} />}
+                    </section>
+                  ))}
+                </article>
+              ))}
+            </section>
+          ))}
+
+          <footer>made with <a href="https://github.com/marcelofpfelix/paper-pure">paper-pure</a></footer>
+        </article>
+      </section>
+    ))}
+  </body>
+</html>
+
+<style>
+  @page {
+    size: A4;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #d4d4d8;
+    color: #18181b;
+    font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 10pt;
+    line-height: 1.36;
+  }
+
+  body.A4 .sheet {
+    background: #fff;
+    box-shadow: 0 12px 36px rgb(24 24 27 / 0.18);
+    height: 296mm;
+    margin: 10mm auto;
+    overflow: hidden;
+    position: relative;
+    width: 210mm;
+  }
+
+  .cv-download,
+  .print-info {
+    background: #dbeafe;
+    border-radius: 5px;
+    margin: 8px auto;
+    padding: 6px 10px;
+    width: 190mm;
+  }
+
+  .cv-download a,
+  .print-info a,
+  .print-cv a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .print-cv {
+    height: 100%;
+    position: relative;
+  }
+
+  .print-profile {
+    display: grid;
+    gap: 0;
+    grid-template-columns: 45mm 1fr;
+    margin-bottom: 10px;
+  }
+
+  .print-avatar {
+    background: #e4e4e7;
+    min-height: 45mm;
+    padding: 5mm;
+    text-align: center;
+  }
+
+  .print-avatar img {
+    border: 2px solid #a1a1aa;
+    border-radius: 999px;
+    height: 24mm;
+    object-fit: cover;
+    width: 24mm;
+  }
+
+  .print-avatar h1 {
+    color: #2563eb;
+    font-size: 15pt;
+    line-height: 1;
+    margin: 3mm 0 1mm;
+  }
+
+  .print-avatar p {
+    font-size: 8.5pt;
+    margin: 0;
+  }
+
+  .print-profile-details {
+    background: #f4f4f5;
+    display: grid;
+    gap: 5mm;
+    grid-template-columns: 1fr 1fr;
+    min-height: 45mm;
+    padding: 5mm;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  .print-profile-details h2,
+  .print-section h2 {
+    color: #2563eb;
+  }
+
+  .print-profile-details h2 {
+    font-size: 11pt;
+    margin-bottom: 5px;
+  }
+
+  .print-profile-details p {
+    font-size: 8.5pt;
+    margin-bottom: 3px;
+  }
+
+  .print-info {
+    font-size: 8.5pt;
+    margin-bottom: 8px;
+    width: auto;
+  }
+
+  .print-section {
+    margin-top: 8px;
+  }
+
+  .print-section h2 {
+    align-items: center;
+    display: flex;
+    font-size: 13pt;
+    font-weight: 500;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .print-section h2 span {
+    align-items: center;
+    color: #71717a;
+    display: inline-flex;
+  }
+
+  .print-section h2 svg {
+    fill: none;
+    height: 10pt;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 10pt;
+  }
+
+  .print-group + .print-group {
+    margin-top: 5px;
+  }
+
+  .print-entity {
+    align-items: center;
+    display: inline-flex;
+    gap: 5px;
+    margin-bottom: 3px;
+  }
+
+  .print-entity img {
+    border-radius: 4px;
+    height: 10mm;
+    object-fit: contain;
+    width: 10mm;
+  }
+
+  .print-item header {
+    align-items: baseline;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .print-item h3 {
+    color: #52525b;
+    font-size: 10pt;
+    margin-bottom: 2px;
+  }
+
+  .print-item header p {
+    color: #52525b;
+    font-size: 8.5pt;
+    margin-bottom: 2px;
+    text-align: right;
+  }
+
+  .print-description,
+  .print-description :global(li) {
+    font-size: 8.7pt;
+  }
+
+  .print-description :global(ul) {
+    margin: 0;
+    padding-left: 14px;
+  }
+
+  .print-description :global(p) {
+    margin-bottom: 3px;
+  }
+
+  footer {
+    bottom: 0;
+    color: #a1a1aa;
+    font-size: 8pt;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+  }
+
+  @media print {
+    body {
+      background: #fff;
+    }
+
+    body.A4 .sheet {
+      box-shadow: none;
+      margin: 0;
+    }
+
+    .no-print {
+      display: none;
+    }
+  }
+</style>

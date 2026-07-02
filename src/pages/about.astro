@@ -1,0 +1,32 @@
+---
+import { PaperBaseLayout } from "paper-pure/components";
+import { profile } from "../data/profile";
+import { site } from "../site.config";
+---
+
+<PaperBaseLayout
+  title={`About | ${site.title}`}
+  description={site.description}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-hero">
+    <h1>About</h1>
+    <p class="paper-description">{profile.headline}</p>
+  </section>
+
+  <section class="paper-section">
+    <h2>Whoami</h2>
+    <p>
+      I work around telecom, infrastructure, local-first tooling, and developer automation.
+      This site keeps the writing separate from the reusable theme package, so posts stay portable.
+    </p>
+    <p class="paper-actions">
+      <a href="/profile/">Profile</a>
+      <a href="/profile/print/">A4 CV</a>
+      <a href={profile.canonicalCv}>Original CV</a>
+    </p>
+  </section>
+</PaperBaseLayout>

@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from "astro:content";
+import { PaperPostLayout, PaperRemotePostStats } from "paper-pure/components";
+import { getAdjacentPosts, postSlug, postTags, publishedPosts, readingTime } from "paper-pure/utils";
+import { postStats } from "../../data/post-stats";
+import { site } from "../../site.config";
+
+export async function getStaticPaths() {
+  const posts = publishedPosts(await getCollection("posts"));
+  return posts.map(post => ({
+    params: { slug: postSlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const posts = publishedPosts(await getCollection("posts"));
+const adjacent = getAdjacentPosts(posts, post.id);
+const stats = postStats[postSlug(post)];
+---
+
+<PaperPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  pubDatetime={post.data.pubDatetime}
+  modDatetime={post.data.modDatetime}
+  tags={postTags(post)}
+  readingTime={readingTime(post.body)}
+  headings={headings}
+  showToc={true}
+  previous={adjacent.previous}
+  next={adjacent.next}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <Content />
+  <PaperRemotePostStats
+    slot="stats"
+    endpoint="/post-stats.json"
+    slug={postSlug(post)}
+    commentsCount={stats?.comments}
+    viewsCount={stats?.views}
+  />
+</PaperPostLayout>

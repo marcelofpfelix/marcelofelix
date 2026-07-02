@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import { PaperBaseLayout, PaperNoteList, PaperPostList, PaperProjectList } from "paper-pure/components";
+import { pinnedPosts, publishedPosts } from "paper-pure/utils";
+import { projects } from "../data/projects";
+import { site } from "../site.config";
+
+const allPosts = publishedPosts(await getCollection("posts"));
+const pinned = pinnedPosts(allPosts);
+const posts = (pinned.length ? pinned : allPosts).slice(0, site.homePostLimit);
+const notes = (await getCollection("notes"))
+  .sort((a, b) => new Date(b.data.date ?? 0).valueOf() - new Date(a.data.date ?? 0).valueOf())
+  .slice(0, 3);
+---
+
+<PaperBaseLayout
+  title={site.title}
+  description={site.description}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-hero">
+    <h1>{site.title}</h1>
+    <p class="paper-description">{site.description}</p>
+  </section>
+
+  <section class="paper-section">
+    <h2>{pinned.length ? "Pinned posts" : "Latest posts"}</h2>
+    <PaperPostList posts={posts} />
+    <p class="paper-actions paper-actions-split">
+      <a href="/profile/">More about me</a>
+      <a href="/posts/">More posts</a>
+    </p>
+  </section>
+
+  <section class="paper-section">
+    <h2>Pinned projects</h2>
+    <PaperProjectList projects={projects} />
+  </section>
+
+  <section class="paper-section">
+    <h2>Short notes</h2>
+    <PaperNoteList notes={notes} />
+  </section>
+</PaperBaseLayout>

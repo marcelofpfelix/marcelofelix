@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import { PaperBaseLayout, PaperPostList } from "paper-pure/components";
+import { publishedPosts, sortPostsWithPinned } from "paper-pure/utils";
+import { site } from "../../site.config";
+
+const posts = sortPostsWithPinned(publishedPosts(await getCollection("posts")));
+const previewPosts = posts.slice(0, 3);
+---
+
+<PaperBaseLayout
+  title={`Posts | ${site.title}`}
+  description={site.description}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-hero">
+    <h1>Posts</h1>
+    <p class="paper-description">Technical notes, implementation logs, and small writeups.</p>
+    <p class="paper-actions">
+      <a href="/timeline/">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 7v5l3 3"></path>
+        </svg>
+        Timeline
+      </a>
+    </p>
+  </section>
+
+  <section class="paper-section">
+    <h2>List</h2>
+    <PaperPostList posts={posts} />
+  </section>
+
+  <section class="paper-section">
+    <h2>Compact</h2>
+    <PaperPostList posts={previewPosts} view="compact" />
+  </section>
+
+  <section class="paper-section">
+    <h2>Cards</h2>
+    <PaperPostList posts={previewPosts} view="cards" />
+  </section>
+</PaperBaseLayout>

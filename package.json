@@ -1,0 +1,33 @@
+{
+  "name": "marcelofelix",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "pnpm run dates:check && pnpm run compress:images:optional && astro check && astro build",
+    "logo": "paper-pure-logo '~ $' public/logo.svg && paper-pure-logo '~ $' public/favicon.svg && paper-pure-manifest 'Marcelo Felix' public/site.webmanifest /logo.svg",
+    "cover:theme": "paper-pure-cover src/content/posts/theme-parity-demo.md public/images/theme-parity-cover.svg",
+    "content:outline": "paper-pure-content src/content/posts docs/content-structure.md",
+    "dates:check": "paper-pure-post-date check src/content/posts",
+    "post:date": "paper-pure-post-date",
+    "compress:images": "paper-pure-compress public/images",
+    "compress:images:optional": "paper-pure-compress --optional public/images",
+    "test:lighthouse": "rm -rf lhci-report .lighthouseci && pnpm build && lhci autorun",
+    "preview": "astro preview",
+    "sync": "astro sync"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "astro": "^7.0.4",
+    "paper-pure": "file:../../paper-pure/main"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/markdown-remark": "^7.2.0",
+    "@lhci/cli": "^0.15.1",
+    "remark-definition-list": "^2.0.0",
+    "remark-github-blockquote-alert": "^2.1.0",
+    "typescript": "^5.9.3"
+  }
+}

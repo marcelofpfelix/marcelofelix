@@ -1,0 +1,21 @@
+---
+import { PaperBaseLayout, PaperProjectList } from "paper-pure/components";
+import { projects } from "../data/projects";
+import { site } from "../site.config";
+---
+
+<PaperBaseLayout
+  title={`Projects | ${site.title}`}
+  description={site.description}
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+>
+  <section class="paper-hero">
+    <h1>Projects</h1>
+    <p class="paper-description">Pinned tools, experiments, and repos.</p>
+  </section>
+
+  <PaperProjectList projects={projects} />
+</PaperBaseLayout>
