@@ -1,9 +1,0 @@
-@startuml
-actor Browser
-participant Blog
-participant "paper-pure" as Theme
-Browser -> Blog: request post
-Blog -> Theme: render layout
-Theme --> Browser: static HTML/CSS
-@enduml
-

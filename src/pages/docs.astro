@@ -1,29 +1,26 @@
 ---
-import { PaperArtifactLink, PaperBaseLayout, PaperContentIndex } from "paper-pure/components";
+import { PaperBaseLayout, PaperContentIndex } from "paper-pure/components";
 import { site } from "../site.config";
 
 const docs = [
   {
-    title: "Blog posts",
-    description: "Technical posts organized by source folders, with stable public slugs.",
+    title: "Blog",
+    description: "The consuming site keeps only its own posts. Theme demo posts live in paper-pure.",
     children: [
-      { title: "Markdown feature sample", href: "/posts/markdown-feature-sample/" },
-      {
-        title: "Telecom notes",
-        description: "Folder metadata comes from _index.md.",
-        children: [
-          { title: "Folder tags for nested posts", href: "/posts/folder-tags-demo/" },
-        ],
-      },
+      { title: "Hello paper-pure", href: "/posts/hello-paper-pure/" },
+      { title: "Posts", href: "/posts/" },
+      { title: "Timeline", href: "/timeline/" },
     ],
   },
   {
-    title: "Theme examples",
-    description: "Small pages that exercise paper-pure components and markdown support.",
+    title: "Site pages",
+    description: "Thin Astro routes that import paper-pure components and local Marcelo data.",
     children: [
       { title: "Projects", href: "/projects/" },
-      { title: "Notes", href: "/notes/" },
-      { title: "Timeline", href: "/timeline/" },
+      { title: "About", href: "/about/" },
+      { title: "Profile", href: "/profile/" },
+      { title: "Printable CV", href: "/profile/print/" },
+      { title: "Search", href: "/search/" },
     ],
   },
 ];
@@ -43,26 +40,4 @@ const docs = [
   </section>
 
   <PaperContentIndex items={docs} />
-
-  <section class="paper-section">
-    <h2>Linked diagram sources</h2>
-    <PaperArtifactLink
-      type="mermaid"
-      href="/diagrams/theme-flow.mmd"
-      label="Mermaid source"
-      description="Use this when the source file is more useful than inline rendering."
-    />
-    <PaperArtifactLink
-      type="plantuml"
-      href="/diagrams/call-flow.puml"
-      label="PlantUML source"
-      description="A small manual link until the theme has a real PlantUML markdown plugin."
-    />
-    <PaperArtifactLink
-      type="excalidraw"
-      href="/diagrams/sketch.excalidraw"
-      label="Excalidraw sketch"
-      description="Keep the editable diagram file next to the article or public asset."
-    />
-  </section>
 </PaperBaseLayout>

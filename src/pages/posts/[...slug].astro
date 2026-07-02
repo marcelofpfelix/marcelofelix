@@ -1,8 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
-import { PaperPostLayout, PaperRemotePostStats } from "paper-pure/components";
+import { PaperPostLayout } from "paper-pure/components";
 import { getAdjacentPosts, postSlug, postTags, publishedPosts, readingTime } from "paper-pure/utils";
-import { postStats } from "../../data/post-stats";
 import { site } from "../../site.config";
 
 export async function getStaticPaths() {
@@ -17,7 +16,6 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const posts = publishedPosts(await getCollection("posts"));
 const adjacent = getAdjacentPosts(posts, post.id);
-const stats = postStats[postSlug(post)];
 ---
 
 <PaperPostLayout
@@ -37,11 +35,4 @@ const stats = postStats[postSlug(post)];
   socialLinks={site.socialLinks}
 >
   <Content />
-  <PaperRemotePostStats
-    slot="stats"
-    endpoint="/post-stats.json"
-    slug={postSlug(post)}
-    commentsCount={stats?.comments}
-    viewsCount={stats?.views}
-  />
 </PaperPostLayout>

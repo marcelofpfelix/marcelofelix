@@ -17,13 +17,4 @@ const posts = defineCollection({
   }),
 });
 
-const notes = defineCollection({
-  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/notes" }),
-  schema: z.object({
-    text: z.string(),
-    date: z.coerce.date().optional(),
-    tags: z.array(z.string()).optional().default([]),
-  }),
-});
-
-export const collections = { posts, notes };
+export const collections = { posts };

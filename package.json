@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "pnpm run dates:check && pnpm run compress:images:optional && astro check && astro build",
     "logo": "paper-pure-logo '~ $' public/logo.svg && paper-pure-logo '~ $' public/favicon.svg && paper-pure-manifest 'Marcelo Felix' public/site.webmanifest /logo.svg",
-    "cover:theme": "paper-pure-cover src/content/posts/theme-parity-demo.md public/images/theme-parity-cover.svg",
+    "cover:post": "paper-pure-cover src/content/posts/hello-paper-pure.md public/images/hello-paper-pure.svg",
     "content:outline": "paper-pure-content src/content/posts docs/content-structure.md",
     "dates:check": "paper-pure-post-date check src/content/posts",
     "post:date": "paper-pure-post-date",
