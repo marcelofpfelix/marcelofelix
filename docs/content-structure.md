@@ -3,6 +3,6 @@
 Source: `src/content/posts`
 
 Collection: Blog posts
-Description: Site-owned posts only. Reusable theme demo posts live in `paper-pure`.
+Description: Site-owned posts only. Reusable theme demo posts live in `papyrus`.
 
-- hello-paper-pure.md: Hello paper-pure
+- hello-papyrus.md: Hello papyrus

@@ -1,20 +1,20 @@
 ---
-import { PaperBaseLayout, PaperContentIndex } from "paper-pure/components";
+import { PaperBaseLayout, PaperContentIndex } from "astro-theme-papyrus/components";
 import { site } from "../site.config";
 
 const docs = [
   {
     title: "Blog",
-    description: "The consuming site keeps only its own posts. Theme demo posts live in paper-pure.",
+    description: "The consuming site keeps only its own posts. Theme demo posts live in papyrus.",
     children: [
-      { title: "Hello paper-pure", href: "/posts/hello-paper-pure/" },
+      { title: "Hello papyrus", href: "/posts/hello-papyrus/" },
       { title: "Posts", href: "/posts/" },
       { title: "Timeline", href: "/timeline/" },
     ],
   },
   {
     title: "Site pages",
-    description: "Thin Astro routes that import paper-pure components and local Marcelo data.",
+    description: "Thin Astro routes that import papyrus components and local Marcelo data.",
     children: [
       { title: "Projects", href: "/projects/" },
       { title: "About", href: "/about/" },
@@ -31,6 +31,8 @@ const docs = [
   description={site.description}
   siteTitle={site.title}
   headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
 >

@@ -1,5 +1,5 @@
 ---
-import { PaperBaseLayout, PaperGithubCard, PaperTimeline } from "paper-pure/components";
+import { PaperBaseLayout, PaperGithubCard, PaperTimeline } from "astro-theme-papyrus/components";
 import { cvSections, profile, profileProjects, timelineEvents } from "../../data/profile";
 import { site } from "../../site.config";
 
@@ -25,6 +25,8 @@ function cvIcon(name: string) {
   description={profile.summary}
   siteTitle={site.title}
   headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
 >

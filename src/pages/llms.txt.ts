@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { postHref, publishedPosts } from "paper-pure/utils";
+import { postHref, publishedPosts } from "astro-theme-papyrus/utils";
 import { site } from "../site.config";
 
 export async function GET({ site: astroSite }: { site?: URL }) {

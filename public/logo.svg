@@ -1,10 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 102 96" role="img" aria-label="~ $">
   <style>
-    text { fill: currentColor; font: 700 48px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    text { fill: var(--paper-fg, #4c4f69); font: 700 48px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     .cursor { animation: blink 1.1s steps(1, end) infinite; }
     svg:hover text { fill: var(--paper-accent, currentColor); }
     @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
   </style>
-  <rect width="100%" height="100%" fill="none"/>
+  <rect width="100%" height="100%" fill="var(--paper-bg, #eff1f5)"/>
   <text x="12" y="62">~ $<tspan class="cursor">_</tspan></text>
 </svg>

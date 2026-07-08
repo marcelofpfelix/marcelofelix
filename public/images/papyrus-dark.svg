@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
-  <title id="title">Paper Pure dark mode and search</title>
+  <title id="title">Papyrus dark mode and search</title>
   <desc id="desc">A dark blog screen with a search field and filtered post results.</desc>
   <rect width="960" height="540" fill="#0b0b10"/>
   <rect x="158" y="42" width="644" height="456" rx="20" fill="#101014" stroke="#27272a"/>

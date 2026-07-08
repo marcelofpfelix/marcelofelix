@@ -1,11 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import { PaperBaseLayout, PaperPostList } from "paper-pure/components";
-import { publishedPosts, sortPostsWithPinned } from "paper-pure/utils";
+import { PaperBaseLayout, PaperPostList } from "astro-theme-papyrus/components";
+import { hiddenPosts, publishedPosts, sortPostsWithPinned } from "astro-theme-papyrus/utils";
 import { site } from "../../site.config";
 
-const posts = sortPostsWithPinned(publishedPosts(await getCollection("posts")));
-const previewPosts = posts.slice(0, 3);
+const allPosts = await getCollection("posts");
+const posts = sortPostsWithPinned(publishedPosts(allPosts));
+const archivedPosts = hiddenPosts(allPosts);
 ---
 
 <PaperBaseLayout
@@ -13,6 +14,8 @@ const previewPosts = posts.slice(0, 3);
   description={site.description}
   siteTitle={site.title}
   headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
 >
@@ -27,21 +30,29 @@ const previewPosts = posts.slice(0, 3);
         </svg>
         Timeline
       </a>
+      <a href="/search/">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M20.6 13.1 13 20.7a2 2 0 0 1-2.8 0L3.3 13.8a2 2 0 0 1-.6-1.4V5a2 2 0 0 1 2-2h7.4a2 2 0 0 1 1.4.6l7.1 7.1a1.9 1.9 0 0 1 0 2.4Z"></path>
+          <circle cx="7.5" cy="7.5" r=".5"></circle>
+        </svg>
+        Tags
+      </a>
+      {
+        archivedPosts.length > 0 && (
+          <a href="/search/?archive=hidden">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="5" rx="1"></rect>
+              <path d="M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"></path>
+              <path d="M10 13h4"></path>
+            </svg>
+            Archive
+          </a>
+        )
+      }
     </p>
   </section>
 
   <section class="paper-section">
-    <h2>List</h2>
-    <PaperPostList posts={posts} />
-  </section>
-
-  <section class="paper-section">
-    <h2>Compact</h2>
-    <PaperPostList posts={previewPosts} view="compact" />
-  </section>
-
-  <section class="paper-section">
-    <h2>Cards</h2>
-    <PaperPostList posts={previewPosts} view="cards" />
+    <PaperPostList posts={posts} showTags={false} />
   </section>
 </PaperBaseLayout>

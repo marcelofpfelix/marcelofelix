@@ -1,15 +1,28 @@
 ---
 import { getCollection } from "astro:content";
-import { PaperBaseLayout } from "paper-pure";
-import { getAllTags, postHref, postTags, publishedPosts, sortPosts } from "paper-pure/utils";
+import { PaperBaseLayout } from "astro-theme-papyrus";
+import { getAllTags, hiddenPosts, postHref, postTags, publishedPosts, sortPosts } from "astro-theme-papyrus/utils";
 import { site } from "../site.config";
 
-const allPosts = publishedPosts(await getCollection("posts"));
-const tags = getAllTags(allPosts);
+const allPosts = await getCollection("posts");
+const publicPosts = publishedPosts(allPosts);
+const archivedPosts = hiddenPosts(allPosts);
+const tags = getAllTags(publicPosts);
 const counts = Object.fromEntries(
-  tags.map(tag => [tag, allPosts.filter(post => postTags(post).includes(tag)).length])
+  tags.map(tag => [tag, publicPosts.filter(post => postTags(post).includes(tag)).length])
 );
-const posts = sortPosts(allPosts).map((post) => ({
+const posts = sortPosts(publicPosts).map((post) => ({
+  title: post.data.title,
+  description: post.data.description ?? "",
+  href: postHref(post),
+  tags: postTags(post),
+  date: new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  }).format(post.data.pubDatetime),
+}));
+const archivePosts = sortPosts(archivedPosts).map((post) => ({
   title: post.data.title,
   description: post.data.description ?? "",
   href: postHref(post),
@@ -27,6 +40,8 @@ const posts = sortPosts(allPosts).map((post) => ({
   description="Search blog posts by title, description, or tag."
   siteTitle={site.title}
   headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
 >
@@ -50,7 +65,7 @@ const posts = sortPosts(allPosts).map((post) => ({
   </section>
 </PaperBaseLayout>
 
-<script is:inline define:vars={{ posts }}>
+<script is:inline define:vars={{ archivePosts, posts }}>
   const input = document.querySelector("[data-paper-search]");
   const results = document.querySelector("[data-paper-search-results]");
   const tagButtons = document.querySelectorAll("[data-paper-search-tag]");
@@ -61,9 +76,12 @@ const posts = sortPosts(allPosts).map((post) => ({
 
   function render(query = "") {
     const normalized = query.trim().toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+    const showArchive = params.get("archive") === "hidden";
+    const sourcePosts = showArchive ? archivePosts : posts;
     const matches = normalized
-      ? posts.filter((post) => postText(post).includes(normalized))
-      : posts;
+      ? sourcePosts.filter((post) => postText(post).includes(normalized))
+      : sourcePosts;
 
     results.innerHTML = matches.length
       ? matches

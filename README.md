@@ -1,17 +1,17 @@
 # marcelofelix
 
-Clean Astro blog site for `blog.marcelofelix.com`, consuming `paper-pure`.
+Clean Astro blog site for `blog.marcelofelix.com`, consuming `papyrus`.
 
 During local-only development this repo uses:
 
 ```json
-"paper-pure": "file:../../paper-pure/main"
+"papyrus": "file:../../papyrus/main"
 ```
 
-After `paper-pure` is pushed, switch it to:
+After `papyrus` is pushed, switch it to:
 
 ```sh
-pnpm add github:marcelofpfelix/paper-pure
+pnpm add github:marcelofpfelix/papyrus
 ```
 
 Local ownership:
@@ -20,7 +20,7 @@ Local ownership:
 - `src/pages/`
 - `astro.config.mjs`
 
-Theme ownership stays in `paper-pure`.
+Theme ownership stays in `papyrus`.
 
 ## Lighthouse
 

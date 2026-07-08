@@ -1,11 +1,11 @@
 ---
 import { getCollection, render } from "astro:content";
-import { PaperPostLayout } from "paper-pure/components";
-import { getAdjacentPosts, postSlug, postTags, publishedPosts, readingTime } from "paper-pure/utils";
+import { PaperPostLayout } from "astro-theme-papyrus/components";
+import { getAdjacentPosts, postSlug, postTags, publishedPosts, readingTime, routablePosts } from "astro-theme-papyrus/utils";
 import { site } from "../../site.config";
 
 export async function getStaticPaths() {
-  const posts = publishedPosts(await getCollection("posts"));
+  const posts = routablePosts(await getCollection("posts"));
   return posts.map(post => ({
     params: { slug: postSlug(post) },
     props: { post },
@@ -29,8 +29,11 @@ const adjacent = getAdjacentPosts(posts, post.id);
   showToc={true}
   previous={adjacent.previous}
   next={adjacent.next}
+  backHref={false}
   siteTitle={site.title}
   headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
 >

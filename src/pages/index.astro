@@ -1,13 +1,17 @@
 ---
 import { getCollection } from "astro:content";
-import { PaperBaseLayout, PaperPostList, PaperProjectList } from "paper-pure/components";
-import { pinnedPosts, publishedPosts } from "paper-pure/utils";
+import { PaperBaseLayout, PaperPostList, PaperProjectList } from "astro-theme-papyrus/components";
+import { pinRank, publishedPosts, sortPosts, sortPostsWithPinned } from "astro-theme-papyrus/utils";
 import { projects } from "../data/projects";
 import { site } from "../site.config";
 
 const allPosts = publishedPosts(await getCollection("posts"));
-const pinned = pinnedPosts(allPosts);
-const posts = (pinned.length ? pinned : allPosts).slice(0, site.homePostLimit);
+const pinned = sortPostsWithPinned(allPosts.filter((post) => pinRank(post) > 0));
+const latestPosts = sortPosts(allPosts.filter((post) => pinRank(post) === 0)).slice(0, site.homePostLimit);
+const posts = [...pinned, ...latestPosts];
+const pinnedProjects = projects.filter((project) => project.pinned);
+const latestProjects = projects.filter((project) => !project.pinned).slice(0, site.homeProjectLimit);
+const homeProjects = [...pinnedProjects, ...latestProjects];
 ---
 
 <PaperBaseLayout
@@ -15,25 +19,32 @@ const posts = (pinned.length ? pinned : allPosts).slice(0, site.homePostLimit);
   description={site.description}
   siteTitle={site.title}
   headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
 >
   <section class="paper-hero">
     <h1>{site.title}</h1>
     <p class="paper-description">{site.description}</p>
-  </section>
-
-  <section class="paper-section">
-    <h2>{pinned.length ? "Pinned posts" : "Latest posts"}</h2>
-    <PaperPostList posts={posts} />
-    <p class="paper-actions paper-actions-split">
-      <a href="/profile/">More about me</a>
-      <a href="/posts/">More posts</a>
+    <p class="paper-home-more">
+      <a href="/about/">more about me</a>
     </p>
   </section>
 
   <section class="paper-section">
-    <h2>Pinned projects</h2>
-    <PaperProjectList projects={projects} />
+    <h2>Posts</h2>
+    <PaperPostList posts={posts} />
+    <p class="paper-section-more">
+      <a href="/posts/">more posts</a>
+    </p>
+  </section>
+
+  <section class="paper-section">
+    <h2>Projects</h2>
+    <PaperProjectList projects={homeProjects} />
+    <p class="paper-section-more">
+      <a href="/projects/">more projects</a>
+    </p>
   </section>
 </PaperBaseLayout>

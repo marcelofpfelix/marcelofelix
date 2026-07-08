@@ -307,7 +307,7 @@ export const timelineEvents = cvSections
 
 export const profileProjects: ProfileProject[] = [
   {
-    repo: "marcelofpfelix/paper-pure",
+    repo: "marcelofpfelix/papyrus",
     description: "Reusable Astro theme package wrapping Pure with a Paper-like blog surface.",
   },
   {

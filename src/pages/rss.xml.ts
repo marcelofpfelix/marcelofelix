@@ -1,7 +1,7 @@
 import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { postHref, publishedPosts } from "paper-pure/utils";
+import { postHref, publishedPosts } from "astro-theme-papyrus/utils";
 import { site } from "../site.config";
 
 export const GET: APIRoute = async context => {
