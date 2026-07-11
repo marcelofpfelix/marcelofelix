@@ -2,7 +2,7 @@ HOST ?= 0.0.0.0
 SITE_HOST ?= 192.168.1.102
 PORT ?= 4325
 
-.PHONY: install dev dev-stop build preview serve check
+.PHONY: install dev dev-stop build preview serve pre check cv-export cv-check test-lighthouse
 
 install:
 	pnpm install
@@ -20,7 +20,7 @@ dev-stop:
 	fi
 
 build:
-	pnpm build
+	pnpm run build
 
 preview: build
 	$(MAKE) dev-stop
@@ -30,5 +30,17 @@ serve: build
 	$(MAKE) dev-stop
 	pnpm exec papyrus-serve-static dist $(PORT) $(SITE_HOST)
 
+pre:
+	pnpm run precommit
+
 check:
-	pnpm exec astro check
+	pnpm run check
+
+cv-export:
+	pnpm run cv:export
+
+cv-check:
+	pnpm run cv:check
+
+test-lighthouse:
+	pnpm run test:lighthouse

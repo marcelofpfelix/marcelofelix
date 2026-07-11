@@ -2,16 +2,16 @@
 
 Clean Astro blog site for `blog.marcelofelix.com`, consuming `papyrus`.
 
-During local-only development this repo uses:
+This repo consumes Papyrus from the pushed `0.2.0` branch until the npm package is published:
 
 ```json
-"papyrus": "file:../../papyrus/main"
+"astro-theme-papyrus": "github:marcelofpfelix/papyrus#0.2.0"
 ```
 
-After `papyrus` is pushed, switch it to:
+After `astro-theme-papyrus@0.2.0` is published to npm, switch it to:
 
 ```sh
-pnpm add github:marcelofpfelix/papyrus
+pnpm add astro-theme-papyrus@^0.2.0
 ```
 
 Local ownership:

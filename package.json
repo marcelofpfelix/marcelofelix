@@ -8,7 +8,7 @@
     "build": "pnpm run cv:export && pnpm run dates:check && pnpm run compress:images:optional && astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
     "cv:export": "papyrus-cv-export src/data/profile.toml public/cv/profile",
     "cv:check": "papyrus-cv-export src/data/profile.toml public/cv/profile --check",
-    "precommit": "pnpm run cv:export",
+    "precommit": "pnpm run cv:export && pnpm run check",
     "logo": "papyrus-logo public/logo.svg && papyrus-logo public/favicon.svg && papyrus-mobile-icons public && papyrus-manifest public/site.webmanifest",
     "cover:post": "papyrus-cover src/content/posts/hello-papyrus.md public/images/hello-papyrus.svg",
     "content:outline": "papyrus-content src/content/posts docs/content-structure.md",
@@ -18,13 +18,14 @@
     "compress:images:optional": "papyrus-compress --optional public/images",
     "test:lighthouse": "rm -rf lhci-report .lighthouseci && pnpm build && lhci autorun",
     "preview": "astro preview",
-    "sync": "astro sync"
+    "sync": "astro sync",
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^7.0.4",
-    "astro-theme-papyrus": "file:../../papyrus/main",
+    "astro-theme-papyrus": "github:marcelofpfelix/papyrus#0.2.0",
     "rehype-callouts": "^2.2.0"
   },
   "devDependencies": {
@@ -35,5 +36,6 @@
     "pagefind": "^1.5.2",
     "remark-definition-list": "^2.0.0",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "pnpm@11.9.0"
 }
