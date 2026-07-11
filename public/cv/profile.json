@@ -1,0 +1,314 @@
+{
+  "name": "Marcelo Félix",
+  "handle": "marcelofpfelix",
+  "avatar": "/cv/marcelo/marcelo.jpg",
+  "favicon": "/cv/marcelo/marcelo.ico",
+  "ogImage": "/cv/marcelo/og.png",
+  "canonicalCv": "https://bandonga.com/cv/marcelo",
+  "bio": "Telco/CS Eng @telnyx",
+  "summary": "Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience.",
+  "location": "Working remote at Europe",
+  "emailParts": {
+    "user": "marcelo",
+    "domain": "bandonga.com",
+    "domainParts": [
+      "bandonga",
+      "com"
+    ],
+    "display": "marcelo＠bandonga.com"
+  },
+  "printColor": "#37474F",
+  "pages": 2,
+  "nationality": [
+    {
+      "name": "Portuguese",
+      "flag": "pt"
+    }
+  ],
+  "languages": [
+    {
+      "name": "Proficient in English",
+      "flag": "en"
+    }
+  ],
+  "roles": [
+    "SW Eng (Backend | VoIP)",
+    "DevOps (SRE | Cloud)"
+  ],
+  "links": [
+    {
+      "label": "marcelofelix",
+      "href": "https://www.linkedin.com/in/marcelofelix",
+      "icon": "linkedin"
+    },
+    {
+      "label": "marcelofpfelix",
+      "href": "https://github.com/marcelofpfelix",
+      "icon": "github"
+    },
+    {
+      "label": "marcelofpfelix",
+      "href": "https://t.me/marcelofpfelix",
+      "icon": "telegram"
+    },
+    {
+      "label": "marcelofpfelix",
+      "href": "https://keybase.io/marcelofpfelix",
+      "icon": "keybase"
+    },
+    {
+      "label": "bandonga.com",
+      "href": "https://bandonga.com",
+      "icon": "link"
+    }
+  ],
+  "sections": [
+    {
+      "id": "profile",
+      "title": "Profile",
+      "icon": "user",
+      "page": 1,
+      "groups": [
+        {
+          "items": [
+            {
+              "title": "Profile",
+              "description": "Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience. Eager to learn more about SRE, Linux, Networking, VoIP, DevOps, Coding, Monitoring, Cloud Computing, Automation, Microservices and Containers. Enthusiastic about open source, writing and experimenting in a Homelab."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "experience",
+      "title": "Professional Experience",
+      "icon": "briefcase",
+      "page": 1,
+      "range": {
+        "start": "2014-01-01T00:00:00"
+      },
+      "groups": [
+        {
+          "title": "Telnyx",
+          "url": "https://telnyx.com/",
+          "logo": "/cv/marcelo/telnyx.png",
+          "items": [
+            {
+              "title": "SW Engineer",
+              "dates": "May 2021 - Present",
+              "location": "Remote",
+              "description": "DevOps Engineeer, specialised in RTC communications (SIP proxies), using kamailio and developing in python, go.",
+              "range": {
+                "start": "2021-05-01T00:00:00"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Talkdesk",
+          "url": "https://talkdesk.com/",
+          "logo": "/cv/marcelo/talkdesk.png",
+          "items": [
+            {
+              "title": "VoIP Network Engineer",
+              "dates": "Nov 2018 - Mai 2021",
+              "location": "Remote",
+              "description": "Professional Services and Support Eng Voice specialist responsible to diagnose and solve complex Call Quality issues in CCaaS and SIP trunk setups between multiple SBC/PBX and a CPaaS, with E2E troubleshooting and Service Delivery.",
+              "range": {
+                "start": "2018-11-01T00:00:00",
+                "end": "2021-05-01T00:00:00"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Celfocus",
+          "url": "https://celfocus.com/",
+          "logo": "/cv/marcelo/celfocus.png",
+          "items": [
+            {
+              "title": "Service Operations",
+              "dates": "2014 - Nov 2018",
+              "location": "Lisboa",
+              "description": "Capgemini and CELFocus project in the Unified Communications team, with Vodafone One Net and GCC service. SRE-style operations for Red Hat Linux, SIP Trunks, PBX, Weblogic, ActiveMQ JMS Broker and NOKIA mCAS. Development of tools and scripting with bash and python for monitoring and automation. Tier 2 support, fault/change management, release acceptance, on-call, networking troubleshooting, REST/SOAP Web Services, VoIP and SIP flows in the IMS Network.",
+              "range": {
+                "start": "2014-01-01T00:00:00",
+                "end": "2018-11-01T00:00:00"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "title": "Skills",
+      "icon": "tools",
+      "page": 1,
+      "groups": [
+        {
+          "items": [
+            {
+              "title": "Skills",
+              "description": "- Software Eng programming in Python, Go, Bash, git.\n- Linux (RedHat/Debian), Docker containers and Kubernetes Administration.\n- Automation and CI/CD with Ansible, Packer, Vagrant and Jenkins.\n- Monitoring with ElasticSearch, Prometheus and Grafana.\n- Understanding of Networking (TCP/IP), routing and switching.\n- Experience in RTC SIP/RTP Protocols, IMS Network, WebRTC, SIP Servers/Proxies (Kamailio).\n- Interaction with PostgresDB, InfluxDB and OracleDB.\n- Homelab with Proxmox VE virtualization.",
+              "tags": [
+                "sre",
+                "voip",
+                "linux",
+                "networking",
+                "devops",
+                "cloud",
+                "automation"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "education",
+      "title": "Education",
+      "icon": "school",
+      "page": 2,
+      "groups": [
+        {
+          "title": "Técnico - Universidade de Lisboa",
+          "url": "https://tecnico.ulisboa.pt/",
+          "logo": "/cv/marcelo/tecnico.png",
+          "items": [
+            {
+              "title": "Master in Computers Science & Electrical Engineering",
+              "location": "Lisboa",
+              "description": "Specialisation in Telecommunications and Computer Science\nKnowledge of Fundamentals of Communications, Propagation and Radiation, and Telecommunication Networks and Systems. Development of programming skills in C, JAVA and MATLAB. SQL, DB modeling and Entity relationship diagrams. Additional basic knowledge of Mathematica, HTML5, Javascript and PHP."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "certifications",
+      "title": "Certifications",
+      "icon": "award",
+      "page": 2,
+      "groups": [
+        {
+          "title": "WebLogic Server 12c Administrator",
+          "url": "https://www.youracclaim.com/users/marcelofelix",
+          "logo": "/cv/marcelo/weblogic.png",
+          "items": [
+            {
+              "title": "Oracle"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "organizations",
+      "title": "Organizations",
+      "icon": "university",
+      "page": 2,
+      "groups": [
+        {
+          "title": "Best",
+          "url": "https://www.best.eu.org",
+          "logo": "/cv/marcelo/best.png",
+          "items": [
+            {
+              "title": "Sprint course",
+              "dates": "May 2013",
+              "location": "Lyon",
+              "description": "Course about telecommunications, with students around Europe."
+            }
+          ]
+        },
+        {
+          "title": "SystemsGroup",
+          "url": "https://systems-group.org/",
+          "logo": "/cv/marcelo/systemsgroup.png",
+          "items": [
+            {
+              "title": "Finance Board",
+              "dates": "2010 - 2011",
+              "location": "Lisboa",
+              "description": "Youth Association with IT services and aim to support entrepreneurship and the creation of junior companies."
+            }
+          ]
+        },
+        {
+          "title": "República \"A Desordem dos Engenheiros\"",
+          "url": "https://desordem.org",
+          "logo": "/cv/marcelo/desordem.png",
+          "items": [
+            {
+              "title": "Secretary / President",
+              "dates": "2008 - 2013",
+              "location": "Lisboa",
+              "description": "A fraternity house connected to Instituto Superior Técnico. I was involved with financial, human and material resources, diplomatic relationships with other fraternities and institutions, and organized events."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "volunteering",
+      "title": "Volunteering",
+      "icon": "hands",
+      "page": 2,
+      "groups": [
+        {
+          "title": "Colégio Maria Auxiliadora",
+          "url": "https://sdb.org",
+          "logo": "/cv/marcelo/salesianos.png",
+          "items": [
+            {
+              "title": "Volunteer lead",
+              "dates": "Aug 2014",
+              "location": "Namaacha",
+              "description": "The leader in a short-term GASTagus project: management of a five-volunteer team, supervisor of project design and implementation, and cooperation with local NGOs."
+            }
+          ]
+        },
+        {
+          "title": "ACRIDES",
+          "url": "http://acrides.org.cv",
+          "logo": "/cv/marcelo/acrides.png",
+          "items": [
+            {
+              "title": "Volunteer / Volunteer lead",
+              "dates": "Aug 2012 / Aug 2013",
+              "location": "Praia",
+              "description": "Volunteer in the GASTagus project in the outskirts of Praia: cooperation with a local NGDO, ACRIDES, giving training to children, teenagers and adults in education for development, and leader in the next year."
+            }
+          ]
+        },
+        {
+          "title": "Leigos para o Desenvolvimento",
+          "url": "https://pontosj.pt/leigos/",
+          "logo": "/cv/marcelo/leigos.png",
+          "items": [
+            {
+              "title": "Volunteer",
+              "dates": "2012",
+              "location": "Lisboa",
+              "description": "Supporting immigrant children in school underachievement and integration at Centro S. Pedro Claver."
+            }
+          ]
+        },
+        {
+          "title": "GASTagus",
+          "url": "https://www.gastagus.org",
+          "logo": "/cv/marcelo/gastagus.png",
+          "items": [
+            {
+              "title": "Volunteer / Collaborator / Collaborator lead",
+              "dates": "2011 - 2014",
+              "location": "Lisboa",
+              "description": "NGDO where I received 120 hours of training in education for development and fundraising. Collaborator responsible for volunteer recruitment and training, plus financial and logistic coordination for short-term international youth volunteer projects."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

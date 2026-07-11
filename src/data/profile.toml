@@ -1,0 +1,264 @@
+[user]
+name = "Marcelo Félix"
+handle = "marcelofpfelix"
+avatar = "/cv/marcelo/marcelo.jpg"
+favicon = "/cv/marcelo/marcelo.ico"
+og_image = "/cv/marcelo/og.png"
+canonical_cv = "https://bandonga.com/cv/marcelo"
+bio = "Telco/CS Eng @telnyx"
+summary = "Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience."
+print_color = "#37474F"
+email_user = "marcelo"
+email_domain = "bandonga.com"
+links = ["linkedin", "github", "telegram", "keybase", "website"]
+print_links = ["email", "linkedin", "github", "website"]
+location = "Working remote at Europe"
+nationality = ["nat_pt"]
+languages = ["lan_en"]
+roles = ["SW Eng (Backend | VoIP)", "DevOps (SRE | Cloud)"]
+pages = 2
+sections = ["profile", "experience", "skills", "education", "certifications", "organizations", "volunteering"]
+
+[user.linkedin]
+name = "marcelofelix"
+url = "https://www.linkedin.com/in/"
+icon = "linkedin"
+
+[user.github]
+name = "marcelofpfelix"
+url = "https://github.com/"
+icon = "github"
+
+[user.telegram]
+name = "marcelofpfelix"
+url = "https://t.me/"
+icon = "telegram"
+
+[user.keybase]
+name = "marcelofpfelix"
+url = "https://keybase.io/"
+icon = "keybase"
+
+[user.website]
+name = "bandonga.com"
+href = "https://bandonga.com"
+icon = "link"
+
+[user.nat_pt]
+name = "Portuguese"
+flag = "pt"
+
+[user.lan_en]
+name = "Proficient in English"
+flag = "en"
+
+[user.data.profile]
+title = "Profile"
+icon = "user"
+page = 1
+groups = ["profile"]
+
+[user.data.profile.profile]
+items = ["profile"]
+
+[user.data.profile.profile.profile]
+title = "Profile"
+description = "Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience. Eager to learn more about SRE, Linux, Networking, VoIP, DevOps, Coding, Monitoring, Cloud Computing, Automation, Microservices and Containers. Enthusiastic about open source, writing and experimenting in a Homelab."
+
+[user.data.experience]
+title = "Professional Experience"
+icon = "briefcase"
+page = 1
+groups = ["telnyx", "talkdesk", "celfocus"]
+
+[user.data.experience.range]
+a = "2014-01-01T00:00:00"
+
+[user.data.experience.telnyx]
+ententy = "Telnyx"
+url = "https://telnyx.com/"
+logo = "/cv/marcelo/telnyx.png"
+items = ["sw_engineer"]
+
+[user.data.experience.telnyx.sw_engineer]
+title = "SW Engineer"
+dates = "May 2021 - Present"
+location = "Remote"
+description = "DevOps Engineeer, specialised in RTC communications (SIP proxies), using kamailio and developing in python, go."
+
+[user.data.experience.telnyx.sw_engineer.range]
+a = "2021-05-01T00:00:00"
+
+[user.data.experience.talkdesk]
+ententy = "Talkdesk"
+url = "https://talkdesk.com/"
+logo = "/cv/marcelo/talkdesk.png"
+items = ["voip_network_engineer"]
+
+[user.data.experience.talkdesk.voip_network_engineer]
+title = "VoIP Network Engineer"
+dates = "Nov 2018 - Mai 2021"
+location = "Remote"
+description = "Professional Services and Support Eng Voice specialist responsible to diagnose and solve complex Call Quality issues in CCaaS and SIP trunk setups between multiple SBC/PBX and a CPaaS, with E2E troubleshooting and Service Delivery."
+
+[user.data.experience.talkdesk.voip_network_engineer.range]
+a = "2018-11-01T00:00:00"
+b = "2021-05-01T00:00:00"
+
+[user.data.experience.celfocus]
+ententy = "Celfocus"
+url = "https://celfocus.com/"
+logo = "/cv/marcelo/celfocus.png"
+items = ["service_operations"]
+
+[user.data.experience.celfocus.service_operations]
+title = "Service Operations"
+dates = "2014 - Nov 2018"
+location = "Lisboa"
+description = "Capgemini and CELFocus project in the Unified Communications team, with Vodafone One Net and GCC service. SRE-style operations for Red Hat Linux, SIP Trunks, PBX, Weblogic, ActiveMQ JMS Broker and NOKIA mCAS. Development of tools and scripting with bash and python for monitoring and automation. Tier 2 support, fault/change management, release acceptance, on-call, networking troubleshooting, REST/SOAP Web Services, VoIP and SIP flows in the IMS Network."
+
+[user.data.experience.celfocus.service_operations.range]
+a = "2014-01-01T00:00:00"
+b = "2018-11-01T00:00:00"
+
+[user.data.skills]
+title = "Skills"
+icon = "tools"
+page = 1
+groups = ["skills"]
+
+[user.data.skills.skills]
+items = ["skills"]
+
+[user.data.skills.skills.skills]
+tags = ["sre", "voip", "linux", "networking", "devops", "cloud", "automation"]
+title = "Skills"
+description = "<ul><li>Software Eng programming in Python, Go, Bash, git.</li><li>Linux (RedHat/Debian), Docker containers and Kubernetes Administration.</li><li>Automation and CI/CD with Ansible, Packer, Vagrant and Jenkins.</li><li>Monitoring with ElasticSearch, Prometheus and Grafana.</li><li>Understanding of Networking (TCP/IP), routing and switching.</li><li>Experience in RTC SIP/RTP Protocols, IMS Network, WebRTC, SIP Servers/Proxies (Kamailio).</li><li>Interaction with PostgresDB, InfluxDB and OracleDB.</li><li>Homelab with Proxmox VE virtualization.</li></ul>"
+
+[user.data.education]
+title = "Education"
+icon = "school"
+page = 2
+groups = ["tecnico"]
+
+[user.data.education.tecnico]
+ententy = "Técnico - Universidade de Lisboa"
+url = "https://tecnico.ulisboa.pt/"
+logo = "/cv/marcelo/tecnico.png"
+items = ["meec"]
+
+[user.data.education.tecnico.meec]
+title = "Master in Computers Science & Electrical Engineering"
+location = "Lisboa"
+description = "<strong>Specialisation in Telecommunications and Computer Science</strong><br>Knowledge of Fundamentals of Communications, Propagation and Radiation, and Telecommunication Networks and Systems. Development of programming skills in C, JAVA and MATLAB. SQL, DB modeling and Entity relationship diagrams. Additional basic knowledge of Mathematica, HTML5, Javascript and PHP."
+
+[user.data.certifications]
+title = "Certifications"
+icon = "award"
+page = 2
+groups = ["weblogic"]
+
+[user.data.certifications.weblogic]
+ententy = "WebLogic Server 12c Administrator"
+url = "https://www.youracclaim.com/users/marcelofelix"
+logo = "/cv/marcelo/weblogic.png"
+items = ["oracle"]
+
+[user.data.certifications.weblogic.oracle]
+title = "Oracle"
+
+[user.data.organizations]
+title = "Organizations"
+icon = "university"
+page = 2
+groups = ["best", "systemsgroup", "desordem"]
+
+[user.data.organizations.best]
+ententy = "Best"
+url = "https://www.best.eu.org"
+logo = "/cv/marcelo/best.png"
+items = ["sprint"]
+
+[user.data.organizations.best.sprint]
+title = "Sprint course"
+dates = "May 2013"
+location = "Lyon"
+description = "Course about telecommunications, with students around Europe."
+
+[user.data.organizations.systemsgroup]
+ententy = "SystemsGroup"
+url = "https://systems-group.org/"
+logo = "/cv/marcelo/systemsgroup.png"
+items = ["finance_board"]
+
+[user.data.organizations.systemsgroup.finance_board]
+title = "Finance Board"
+dates = "2010 - 2011"
+location = "Lisboa"
+description = "Youth Association with IT services and aim to support entrepreneurship and the creation of junior companies."
+
+[user.data.organizations.desordem]
+ententy = "República \"A Desordem dos Engenheiros\""
+url = "https://desordem.org"
+logo = "/cv/marcelo/desordem.png"
+items = ["secretary_president"]
+
+[user.data.organizations.desordem.secretary_president]
+title = "Secretary / President"
+dates = "2008 - 2013"
+location = "Lisboa"
+description = "A fraternity house connected to Instituto Superior Técnico. I was involved with financial, human and material resources, diplomatic relationships with other fraternities and institutions, and organized events."
+
+[user.data.volunteering]
+title = "Volunteering"
+icon = "hands"
+page = 2
+groups = ["salesianos", "acrides", "leigos", "gastagus"]
+
+[user.data.volunteering.salesianos]
+ententy = "Colégio Maria Auxiliadora"
+url = "https://sdb.org"
+logo = "/cv/marcelo/salesianos.png"
+items = ["volunteer_lead"]
+
+[user.data.volunteering.salesianos.volunteer_lead]
+title = "Volunteer lead"
+dates = "Aug 2014"
+location = "Namaacha"
+description = "The leader in a short-term GASTagus project: management of a five-volunteer team, supervisor of project design and implementation, and cooperation with local NGOs."
+
+[user.data.volunteering.acrides]
+ententy = "ACRIDES"
+url = "http://acrides.org.cv"
+logo = "/cv/marcelo/acrides.png"
+items = ["volunteer"]
+
+[user.data.volunteering.acrides.volunteer]
+title = "Volunteer / Volunteer lead"
+dates = "Aug 2012 / Aug 2013"
+location = "Praia"
+description = "Volunteer in the GASTagus project in the outskirts of Praia: cooperation with a local NGDO, ACRIDES, giving training to children, teenagers and adults in education for development, and leader in the next year."
+
+[user.data.volunteering.leigos]
+ententy = "Leigos para o Desenvolvimento"
+url = "https://pontosj.pt/leigos/"
+logo = "/cv/marcelo/leigos.png"
+items = ["volunteer"]
+
+[user.data.volunteering.leigos.volunteer]
+title = "Volunteer"
+dates = "2012"
+location = "Lisboa"
+description = "Supporting immigrant children in school underachievement and integration at Centro S. Pedro Claver."
+
+[user.data.volunteering.gastagus]
+ententy = "GASTagus"
+url = "https://www.gastagus.org"
+logo = "/cv/marcelo/gastagus.png"
+items = ["collaborator"]
+
+[user.data.volunteering.gastagus.collaborator]
+title = "Volunteer / Collaborator / Collaborator lead"
+dates = "2011 - 2014"
+location = "Lisboa"
+description = "NGDO where I received 120 hours of training in education for development and fundraising. Collaborator responsible for volunteer recruitment and training, plus financial and logistic coordination for short-term international youth volunteer projects."

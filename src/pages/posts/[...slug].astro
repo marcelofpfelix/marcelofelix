@@ -5,17 +5,20 @@ import { getAdjacentPosts, postSlug, postTags, publishedPosts, readingTime, rout
 import { site } from "../../site.config";
 
 export async function getStaticPaths() {
-  const posts = routablePosts(await getCollection("posts"));
+  const allPosts = await getCollection("posts");
+  const posts = routablePosts(allPosts);
+  const adjacentPosts = publishedPosts(allPosts);
   return posts.map(post => ({
     params: { slug: postSlug(post) },
-    props: { post },
+    props: { post, adjacent: getAdjacentPosts(adjacentPosts, post.id) },
   }));
 }
 
-const { post } = Astro.props;
+const { post, adjacent } = Astro.props;
 const { Content, headings } = await render(post);
-const posts = publishedPosts(await getCollection("posts"));
-const adjacent = getAdjacentPosts(posts, post.id);
+const sourcePath = post.filePath?.replace(/^.*?(src\/content\/posts\/)/, "$1") ?? `src/content/posts/${post.id}`;
+const sourceLinkUrl = `https://github.com/marcelofpfelix/marcelofelix/blob/main/${sourcePath}`;
+const sourceUrl = `https://raw.githubusercontent.com/marcelofpfelix/marcelofelix/main/${sourcePath}`;
 ---
 
 <PaperPostLayout
@@ -23,12 +26,16 @@ const adjacent = getAdjacentPosts(posts, post.id);
   description={post.data.description}
   pubDatetime={post.data.pubDatetime}
   modDatetime={post.data.modDatetime}
+  cover={post.data.cover}
   tags={postTags(post)}
   readingTime={readingTime(post.body)}
   headings={headings}
   showToc={true}
   previous={adjacent.previous}
   next={adjacent.next}
+  robots={post.data.robots}
+  sourceUrl={sourceUrl}
+  sourceLinkUrl={sourceLinkUrl}
   backHref={false}
   siteTitle={site.title}
   headerTitle={site.headerTitle}
@@ -36,6 +43,7 @@ const adjacent = getAdjacentPosts(posts, post.id);
   defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
+  googleVerification={site.googleVerification}
 >
   <Content />
 </PaperPostLayout>

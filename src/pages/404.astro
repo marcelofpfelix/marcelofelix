@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import { PaperBaseLayout, PaperNotFound } from "astro-theme-papyrus";
+import { postHref, postTags, publishedPosts, sortPosts } from "astro-theme-papyrus/utils";
+import { site } from "../site.config";
+
+const allPosts = await getCollection("posts");
+const postItems = sortPosts(publishedPosts(allPosts)).map((post) => ({
+  title: post.data.title,
+  description: post.data.description,
+  href: postHref(post),
+  tags: postTags(post),
+}));
+const staticItems = [
+  {
+    title: "Posts",
+    description: "All public posts.",
+    href: "/posts/",
+    tags: ["posts"],
+  },
+  {
+    title: "Timeline",
+    description: "Posts in chronological order.",
+    href: "/timeline/",
+    tags: ["posts", "timeline"],
+  },
+  {
+    title: "Search",
+    description: "Search posts by title, description, or tag.",
+    href: "/search/",
+    tags: ["search"],
+  },
+  {
+    title: "Projects",
+    description: "Projects and tools.",
+    href: "/projects/",
+    tags: ["projects"],
+  },
+  {
+    title: "About",
+    description: "About Marcelo Felix.",
+    href: "/about/",
+    tags: ["about"],
+  },
+  {
+    title: "Profile",
+    description: "Profile and print view.",
+    href: "/profile/",
+    tags: ["profile", "cv"],
+  },
+];
+const items = [...postItems, ...staticItems];
+---
+
+<PaperBaseLayout
+  title="Page not found"
+  description="Find a matching page on Marcelo Felix."
+  siteTitle={site.title}
+  headerTitle={site.headerTitle}
+  defaultThemeProfile={site.defaultThemeProfile}
+  defaultFontProfile={site.defaultFontProfile}
+  nav={site.nav}
+  socialLinks={site.socialLinks}
+  googleVerification={site.googleVerification}
+>
+  <PaperNotFound items={items} />
+</PaperBaseLayout>

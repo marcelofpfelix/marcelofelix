@@ -13,11 +13,15 @@ import { site } from "../site.config";
   defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
+  googleVerification={site.googleVerification}
 >
   <section class="paper-hero">
     <h1>Projects</h1>
     <p class="paper-description">Pinned tools, experiments, and repos.</p>
   </section>
 
-  <PaperProjectList projects={projects} />
+  <section aria-labelledby="projects-list-heading">
+    <h2 id="projects-list-heading" class="sr-only">Project list</h2>
+    <PaperProjectList projects={projects} />
+  </section>
 </PaperBaseLayout>

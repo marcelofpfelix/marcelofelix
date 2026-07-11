@@ -1,4 +1,5 @@
-HOST ?= 192.168.1.102
+HOST ?= 0.0.0.0
+SITE_HOST ?= 192.168.1.102
 PORT ?= 4325
 
 .PHONY: install dev dev-stop build preview serve check
@@ -27,7 +28,7 @@ preview: build
 
 serve: build
 	$(MAKE) dev-stop
-	python3 -m http.server $(PORT) --bind $(HOST) --directory dist
+	pnpm exec papyrus-serve-static dist $(PORT) $(SITE_HOST)
 
 check:
 	pnpm exec astro check

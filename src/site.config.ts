@@ -1,17 +1,24 @@
+import { loadPaperConfig } from "astro-theme-papyrus/config";
+
+const paperConfig = await loadPaperConfig();
+
 export const site = {
-  title: "Marcelo Felix",
-  headerTitle: "~ $",
-  defaultThemeProfile: "catppuccin",
-  defaultFontProfile: "code",
-  description: "Technical notes on DevOps, telecom, local-first tooling, and AI workflows.",
+  ...paperConfig,
+  title: paperConfig.title,
+  description: paperConfig.description ?? "",
+  headerTitle: paperConfig.brandTitle,
+  defaultThemeProfile: paperConfig.defaultThemeProfile,
+  defaultFontProfile: paperConfig.defaultFontProfile,
+  nav: paperConfig.nav,
+  socialLinks: paperConfig.socialLinks,
   homePostLimit: 3,
   homeProjectLimit: 3,
-  nav: [
-    { href: "/posts/", label: "/posts" },
-    { href: "/projects/", label: "/projects" },
-    { href: "/about/", label: "/about" },
-  ],
-  socialLinks: [
-    { href: "https://github.com/marcelofpfelix", label: "GitHub", icon: "github" },
-  ],
+  postListLimit: paperConfig.postCard.limit ?? 20,
+  post_card: {
+    tags: paperConfig.postCard.tags,
+    read_time: paperConfig.postCard.readTime,
+    fresh_indicators: paperConfig.postCard.freshIndicators,
+    fresh_indicator_text: paperConfig.postCard.freshIndicatorText,
+    updated_date_only: paperConfig.postCard.updatedDateOnly,
+  },
 };

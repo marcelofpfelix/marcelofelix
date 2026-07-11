@@ -5,16 +5,16 @@ import { site } from "../site.config";
 const docs = [
   {
     title: "Blog",
-    description: "The consuming site keeps only its own posts. Theme demo posts live in papyrus.",
+    description: "The consuming site keeps its own posts while Papyrus provides the shared blog UI.",
     children: [
-      { title: "Hello papyrus", href: "/posts/hello-papyrus/" },
+      { title: "Running this site on Papyrus", href: "/posts/hello-papyrus/" },
       { title: "Posts", href: "/posts/" },
       { title: "Timeline", href: "/timeline/" },
     ],
   },
   {
     title: "Site pages",
-    description: "Thin Astro routes that import papyrus components and local Marcelo data.",
+    description: "Astro routes that import Papyrus components and local Marcelo data.",
     children: [
       { title: "Projects", href: "/projects/" },
       { title: "About", href: "/about/" },
@@ -35,6 +35,7 @@ const docs = [
   defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
+  googleVerification={site.googleVerification}
 >
   <section class="paper-hero">
     <h1>Docs</h1>

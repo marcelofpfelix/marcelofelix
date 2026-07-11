@@ -1,7 +1,7 @@
 export const projects = [
   {
     title: "papyrus",
-    description: "Reusable Astro theme package wrapping Pure with a Paper-like blog surface.",
+    description: "Reusable Astro theme package used by this site for posts, docs, profile pages, projects, RSS, search, and tags.",
     href: "/posts/hello-papyrus/",
     links: [
       { label: "package", href: "/posts/hello-papyrus/" },

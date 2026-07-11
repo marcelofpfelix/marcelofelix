@@ -1,5 +1,6 @@
 ---
 import { PaperBaseLayout } from "astro-theme-papyrus/components";
+import { withBase } from "astro-theme-papyrus/utils";
 import { profile } from "../data/profile";
 import { site } from "../site.config";
 ---
@@ -13,6 +14,7 @@ import { site } from "../site.config";
   defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
+  googleVerification={site.googleVerification}
 >
   <section class="paper-hero">
     <h1>About</h1>
@@ -26,9 +28,9 @@ import { site } from "../site.config";
       This site keeps the writing separate from the reusable theme package, so posts stay portable.
     </p>
     <p class="paper-actions">
-      <a href="/profile/">Profile</a>
-      <a href="/profile/print/">A4 CV</a>
-      <a href={profile.canonicalCv}>Original CV</a>
+      <a href={withBase("/profile/")}>Profile</a>
+      <a href={withBase("/profile/print/")}>A4 CV</a>
+      <a href={profile.canonicalCv}>Canonical CV</a>
     </p>
   </section>
 </PaperBaseLayout>

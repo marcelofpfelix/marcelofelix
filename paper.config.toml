@@ -1,0 +1,41 @@
+[site]
+title = "Marcelo Felix"
+description = "Technical notes on DevOps, telecom, local-first tooling, and AI workflows."
+url = "https://blog.marcelofelix.com"
+lang = "en"
+dir = "ltr"
+timezone = "Europe/Lisbon"
+
+[brand]
+title = "~ $"
+mark = "terminal"
+show_title = false
+
+[theme]
+profile = "catppuccin"
+font_profile = "code"
+
+[post_card]
+tags = false
+read_time = false
+fresh_indicators = true
+fresh_indicator_text = true
+updated_date_only = true
+limit = 20
+
+[[nav]]
+href = "/posts/"
+label = "/posts"
+
+[[nav]]
+href = "/projects/"
+label = "/projects"
+
+[[nav]]
+href = "/about/"
+label = "/about"
+
+[[social]]
+href = "https://github.com/marcelofpfelix"
+label = "GitHub"
+icon = "github"

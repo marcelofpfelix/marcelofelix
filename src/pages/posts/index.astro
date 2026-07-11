@@ -1,12 +1,32 @@
 ---
 import { getCollection } from "astro:content";
 import { PaperBaseLayout, PaperPostList } from "astro-theme-papyrus/components";
-import { hiddenPosts, publishedPosts, sortPostsWithPinned } from "astro-theme-papyrus/utils";
+import { hiddenPosts, publishedPosts, sortPostsWithPinned, withBase } from "astro-theme-papyrus/utils";
 import { site } from "../../site.config";
 
 const allPosts = await getCollection("posts");
 const posts = sortPostsWithPinned(publishedPosts(allPosts));
 const archivedPosts = hiddenPosts(allPosts);
+const visiblePosts = posts.slice(0, site.postListLimit);
+const postListProps = {
+  showTags: site.post_card.tags,
+  showReadTime: site.post_card.read_time,
+  showFreshIndicators: site.post_card.fresh_indicators,
+  showFreshIndicatorText: site.post_card.fresh_indicator_text,
+  showUpdatedDateOnly: site.post_card.updated_date_only,
+  showFirstTagWhenTagsHidden: !site.post_card.tags,
+};
+
+function icon(name: string) {
+  const icons: Record<string, string> = {
+    archive: `<rect x="3" y="4" width="18" height="5" rx="1"></rect><path d="M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"></path><path d="M10 13h4"></path>`,
+    clock: `<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path>`,
+    rss: `<path d="M4 5a15 15 0 0 1 15 15"></path><path d="M4 11a9 9 0 0 1 9 9"></path><circle cx="5" cy="19" r="1"></circle>`,
+    tag: `<path d="M20.6 13.1 13 20.7a2 2 0 0 1-2.8 0L3.3 13.8a2 2 0 0 1-.6-1.4V5a2 2 0 0 1 2-2h7.4a2 2 0 0 1 1.4.6l7.1 7.1a1.9 1.9 0 0 1 0 2.4Z"></path><circle cx="7.5" cy="7.5" r=".5"></circle>`,
+  };
+
+  return icons[name] ?? "";
+}
 ---
 
 <PaperBaseLayout
@@ -18,33 +38,29 @@ const archivedPosts = hiddenPosts(allPosts);
   defaultFontProfile={site.defaultFontProfile}
   nav={site.nav}
   socialLinks={site.socialLinks}
+  googleVerification={site.googleVerification}
 >
   <section class="paper-hero">
-    <h1>Posts</h1>
+    <h1 class="paper-heading-with-action">
+      <span>Posts</span>
+      <a class="paper-heading-icon-link" href={withBase("/rss.xml")} aria-label="RSS feed" title="RSS feed">
+        <svg aria-hidden="true" viewBox="0 0 24 24" set:html={icon("rss")} />
+      </a>
+    </h1>
     <p class="paper-description">Technical notes, implementation logs, and small writeups.</p>
     <p class="paper-actions">
-      <a href="/timeline/">
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="M12 7v5l3 3"></path>
-        </svg>
+      <a href={withBase("/timeline/")}>
+        <svg aria-hidden="true" viewBox="0 0 24 24" set:html={icon("clock")} />
         Timeline
       </a>
-      <a href="/search/">
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <path d="M20.6 13.1 13 20.7a2 2 0 0 1-2.8 0L3.3 13.8a2 2 0 0 1-.6-1.4V5a2 2 0 0 1 2-2h7.4a2 2 0 0 1 1.4.6l7.1 7.1a1.9 1.9 0 0 1 0 2.4Z"></path>
-          <circle cx="7.5" cy="7.5" r=".5"></circle>
-        </svg>
+      <a href={withBase("/tag/")}>
+        <svg aria-hidden="true" viewBox="0 0 24 24" set:html={icon("tag")} />
         Tags
       </a>
       {
         archivedPosts.length > 0 && (
-          <a href="/search/?archive=hidden">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="5" rx="1"></rect>
-              <path d="M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"></path>
-              <path d="M10 13h4"></path>
-            </svg>
+          <a href={withBase("/search/?archive=hidden")}>
+            <svg aria-hidden="true" viewBox="0 0 24 24" set:html={icon("archive")} />
             Archive
           </a>
         )
@@ -53,6 +69,12 @@ const archivedPosts = hiddenPosts(allPosts);
   </section>
 
   <section class="paper-section">
-    <PaperPostList posts={posts} showTags={false} />
+    <PaperPostList
+      posts={visiblePosts}
+      {...postListProps}
+    />
+    <p class="paper-section-more">
+      <a href={withBase("/timeline/")}>view all</a>
+    </p>
   </section>
 </PaperBaseLayout>

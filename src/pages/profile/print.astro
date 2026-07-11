@@ -1,7 +1,21 @@
 ---
-import { cvSections, profile } from "../../data/profile";
+import { PaperCvActions } from "astro-theme-papyrus/components";
+import { cvSections, printProfileLinks, profile, profilePages } from "../../data/profile";
+import { compactDurationLabel, profileLinkKindLabel, shouldShowCvItemTitle, cvIconSvg, cvLinkIcon, withBase } from "astro-theme-papyrus/utils";
+import "../../styles/cv-print.css";
 
-const pages = [1, 2] as const;
+const pages = profilePages;
+const currentCvHref = profile.canonicalCv;
+const cvMarkdownHref = withBase("/cv/profile.md");
+const profileSourceLinks = [
+  { label: "TOML", href: "https://github.com/marcelofpfelix/marcelofelix/blob/main/src/data/profile.toml" },
+  { label: "JSON", href: "https://github.com/marcelofpfelix/marcelofelix/blob/main/public/cv/profile.json" },
+  { label: "Markdown", href: "https://github.com/marcelofpfelix/marcelofelix/blob/main/public/cv/profile.md" },
+];
+const profileVersionLinks = [
+  { label: "Modern", href: withBase("/profile/print/") },
+  { label: "Classic", href: withBase("/profile/ast/") },
+];
 
 function cvIcon(name: string) {
   const icons: Record<string, string> = {
@@ -16,6 +30,7 @@ function cvIcon(name: string) {
 
   return icons[name] ?? icons.user;
 }
+
 ---
 
 <!doctype html>
@@ -24,74 +39,106 @@ function cvIcon(name: string) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={`Printable CV for ${profile.name}`} />
+    <link rel="icon" href={profile.favicon} />
     <title>{profile.name} - Printable CV</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.min.css" />
   </head>
-  <body class="A4">
-    <div class="no-print cv-download">
-      You can also <a href="javascript:window.print()">Print or Save it as PDF</a>.
-    </div>
+  <body style={`--profile-print-color: ${profile.printColor};`}>
+    <PaperCvActions
+      backHref={withBase("/profile/")}
+      print
+      markdownHref={cvMarkdownHref}
+      shareText={profile.headline}
+      sourceLinks={profileSourceLinks}
+      versionLinks={profileVersionLinks}
+    />
 
-    {pages.map(page => (
-      <section class="sheet padding-10mm">
-        <article class="print-cv">
-          {page === 1 && (
-            <>
-              <header class="print-profile">
-                <div class="print-avatar">
-                  <img src={profile.avatar} alt={profile.name} />
-                  <h1>{profile.name}</h1>
-                  <p>{profile.headline}</p>
-                </div>
-                <div class="print-profile-details">
-                  <section>
-                    <h2>Contact</h2>
-                    <p>{profile.email}</p>
-                    {profile.links.map(link => <p><a href={link.href}>{link.label.replace("bandonga.com", "bandonga.com")}</a></p>)}
-                  </section>
-                  <section>
-                    <h2>Info</h2>
-                    {profile.meta.map(item => <p><strong>{item.label}</strong> {item.value}</p>)}
-                  </section>
-                </div>
-              </header>
-              <p class="print-info">You can find this CV always updated at <a href={profile.canonicalCv}>bandonga.com/cv/marcelo</a>.</p>
-            </>
-          )}
-
-          {cvSections.filter(section => section.page === page).map(section => (
-            <section class="print-section">
-              <h2><span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon(section.icon)} /></span>{section.title}</h2>
-              {section.groups.map(group => (
-                <article class="print-group">
-                  {group.entity && (
-                    <a class="print-entity" href={group.url}>
-                      {group.logo && <img src={group.logo} alt="" />}
-                      <strong>{group.entity}</strong>
-                    </a>
-                  )}
-                  {group.items.map(item => (
-                    <section class="print-item">
-                      <header>
-                        <h3>{item.title}</h3>
-                        {(item.location || item.dates) && (
-                          <p>{[item.location, item.dates].filter(Boolean).join(" , ")}</p>
-                        )}
-                      </header>
-                      {item.description && <div class="print-description" set:html={item.description} />}
+    <main aria-label={`${profile.name} printable CV`}>
+      {pages.map(page => (
+        <section class="sheet" aria-label={`CV page ${page}`}>
+          <article class="print-cv">
+            {page === 1 && (
+              <>
+                <header class="print-profile">
+                  <div class="print-avatar">
+                    <img src={profile.avatar} alt={profile.name} />
+                    <h1>{profile.name}</h1>
+                    <p>{profile.headline}</p>
+                  </div>
+                  <div class="print-profile-details">
+                    <section>
+                      <h2>Contact</h2>
+                      {printProfileLinks.map(link => (
+                        <p>
+                          <svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvLinkIcon(link)} />
+                          <strong>{profileLinkKindLabel(link)}:</strong>
+                          {link.emailParts ? (
+                            <span class="print-email-parts">
+                              <span>{link.emailParts.user}</span><span class="print-email-at" aria-hidden="true"></span><span>{link.emailParts.domainParts.join(".")}</span>
+                            </span>
+                          ) : (
+                            <span>{link.label}</span>
+                          )}
+                        </p>
+                      ))}
                     </section>
-                  ))}
-                </article>
-              ))}
-            </section>
-          ))}
+                    <section>
+                      <h2>Info</h2>
+                      {profile.meta.map(item => (
+                        <p>
+                          <svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIconSvg(item.icon)} />
+                          <span>{item.value}</span>
+                        </p>
+                      ))}
+                    </section>
+                  </div>
+                </header>
+                <p class="print-info">
+                  You can always find this CV updated at <a href={currentCvHref}>{currentCvHref}</a>.
+                </p>
+              </>
+            )}
 
-          <footer>made with <a href="https://github.com/marcelofpfelix/papyrus">papyrus</a></footer>
-        </article>
-      </section>
-    ))}
+            {cvSections.filter(section => section.page === page).map(section => (
+              <section class="print-section">
+                <h2>
+                  <span><svg aria-hidden="true" viewBox="0 0 24 24" set:html={cvIcon(section.icon)} /></span>
+                  {section.title}
+                  {section.duration && <small>{compactDurationLabel(section.duration)}</small>}
+                </h2>
+                {section.groups.map(group => (
+                  <article class="print-group">
+                    {group.entity && (
+                      <a class="print-entity" href={group.url}>
+                        {group.logo && <img src={group.logo} alt="" />}
+                        <strong>{group.entity}</strong>
+                      </a>
+                    )}
+                    {group.items.map(item => (
+                      <section class="print-item">
+                        {(shouldShowCvItemTitle(section, group, item) || item.location || item.dates || item.duration) && (
+                          <header>
+                            {shouldShowCvItemTitle(section, group, item) && <h3>{item.title}</h3>}
+                            {(item.location || item.dates || item.duration) && (
+                              <p>{[item.location, item.dates, compactDurationLabel(item.duration)].filter(Boolean).join(", ")}</p>
+                            )}
+                          </header>
+                        )}
+                        {item.description && <div class="print-description" set:html={item.description} />}
+                      </section>
+                    ))}
+                  </article>
+                ))}
+              </section>
+            ))}
+
+            <footer>made with <a href="https://github.com/marcelofpfelix/papyrus">github.com/marcelofpfelix/papyrus</a></footer>
+          </article>
+        </section>
+      ))}
+    </main>
   </body>
 </html>
+
 
 <style>
   @page {
@@ -103,37 +150,30 @@ function cvIcon(name: string) {
   }
 
   body {
-    background: #d4d4d8;
     color: #18181b;
     font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 10pt;
     line-height: 1.36;
+    margin: 0;
   }
 
-  body.A4 .sheet {
+  .sheet {
     background: #fff;
     box-shadow: 0 12px 36px rgb(24 24 27 / 0.18);
     height: 296mm;
     margin: 10mm auto;
     overflow: hidden;
+    padding: 10mm;
     position: relative;
     width: 210mm;
   }
 
-  .cv-download,
   .print-info {
     background: #dbeafe;
     border-radius: 5px;
     margin: 8px auto;
     padding: 6px 10px;
     width: 190mm;
-  }
-
-  .cv-download a,
-  .print-info a,
-  .print-cv a {
-    color: #2563eb;
-    text-decoration: none;
   }
 
   .print-cv {
@@ -156,7 +196,7 @@ function cvIcon(name: string) {
   }
 
   .print-avatar img {
-    border: 2px solid #a1a1aa;
+    border: 2px solid #71717a;
     border-radius: 999px;
     height: 24mm;
     object-fit: cover;
@@ -164,7 +204,7 @@ function cvIcon(name: string) {
   }
 
   .print-avatar h1 {
-    color: #2563eb;
+    color: #18181b;
     font-size: 15pt;
     line-height: 1;
     margin: 3mm 0 1mm;
@@ -178,10 +218,10 @@ function cvIcon(name: string) {
   .print-profile-details {
     background: #f4f4f5;
     display: grid;
-    gap: 5mm;
+    gap: 3mm;
     grid-template-columns: 1fr 1fr;
     min-height: 45mm;
-    padding: 5mm;
+    padding: 4mm 5mm;
   }
 
   h1,
@@ -193,22 +233,42 @@ function cvIcon(name: string) {
 
   .print-profile-details h2,
   .print-section h2 {
-    color: #2563eb;
+    color: var(--profile-print-color);
   }
 
   .print-profile-details h2 {
     font-size: 11pt;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
   }
 
   .print-profile-details p {
     font-size: 8.5pt;
-    margin-bottom: 3px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+
+  .print-profile-details p {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+    min-height: 0;
+  }
+
+  .print-profile-details p svg {
+    color: var(--profile-print-color);
+    flex: 0 0 auto;
+    height: 0.95em;
+    width: 0.95em;
+  }
+
+  .print-email-at::before {
+    content: "@";
   }
 
   .print-info {
     font-size: 8.5pt;
     margin-bottom: 8px;
+    text-align: center;
     width: auto;
   }
 
@@ -227,7 +287,7 @@ function cvIcon(name: string) {
 
   .print-section h2 span {
     align-items: center;
-    color: #71717a;
+    color: var(--profile-print-color);
     display: inline-flex;
   }
 
@@ -241,6 +301,13 @@ function cvIcon(name: string) {
     width: 10pt;
   }
 
+  .print-section h2 small {
+    color: #71717a;
+    font-size: 8pt;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
   .print-group + .print-group {
     margin-top: 5px;
   }
@@ -250,6 +317,7 @@ function cvIcon(name: string) {
     display: inline-flex;
     gap: 5px;
     margin-bottom: 3px;
+    min-height: 44px;
   }
 
   .print-entity img {
@@ -267,13 +335,13 @@ function cvIcon(name: string) {
   }
 
   .print-item h3 {
-    color: #52525b;
+    color: #3f3f46;
     font-size: 10pt;
     margin-bottom: 2px;
   }
 
   .print-item header p {
-    color: #52525b;
+    color: #3f3f46;
     font-size: 8.5pt;
     margin-bottom: 2px;
     text-align: right;
@@ -295,7 +363,7 @@ function cvIcon(name: string) {
 
   footer {
     bottom: 0;
-    color: #a1a1aa;
+    color: #52525b;
     font-size: 8pt;
     left: 0;
     position: absolute;
@@ -304,13 +372,15 @@ function cvIcon(name: string) {
   }
 
   @media print {
-    body {
-      background: #fff;
-    }
-
-    body.A4 .sheet {
+    .sheet {
       box-shadow: none;
       margin: 0;
+    }
+
+    .cv-download button,
+    .print-profile-details p,
+    .print-entity {
+      min-height: 0;
     }
 
     .no-print {
