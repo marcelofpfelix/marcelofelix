@@ -42,7 +42,7 @@ icon = "github"
 
 [[project]]
 title = "papyrus"
-description = "Reusable Astro theme package used by this site for posts, docs, profile pages, projects, RSS, search, and tags."
+description = "Reusable Astro theme package used by this site for posts, profile pages, projects, RSS, search, and tags."
 href = "/posts/hello-papyrus/"
 repo = "https://github.com/marcelofpfelix/papyrus"
 image = "/images/papyrus-layout.svg"
@@ -52,10 +52,6 @@ status = "active"
   [[project.links]]
   label = "package"
   href = "/posts/hello-papyrus/"
-
-  [[project.links]]
-  label = "docs"
-  href = "/docs/"
 
   [[project.links]]
   label = "website"

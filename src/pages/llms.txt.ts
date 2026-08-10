@@ -16,7 +16,6 @@ export async function GET({ site: astroSite }: { site?: URL }) {
     `- [Projects](${base}/projects/)`,
     `- [About](${base}/about/)`,
     `- [Profile](${base}/profile/)`,
-    `- [Docs](${base}/docs/)`,
     `- [Timeline](${base}/timeline/)`,
     `- [Search](${base}/search/)`,
     ...posts.map(post => `- [${post.data.title}](${base}${postHref(post)})`),
