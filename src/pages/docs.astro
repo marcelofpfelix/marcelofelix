@@ -1,5 +1,5 @@
 ---
-import { PaperBaseLayout, PaperContentIndex } from "astro-theme-papyrus/components";
+import { PapyrusBaseLayout, PapyrusContentIndex } from "astro-theme-papyrus/components";
 import { site } from "../site.config";
 
 const docs = [
@@ -26,7 +26,7 @@ const docs = [
 ];
 ---
 
-<PaperBaseLayout
+<PapyrusBaseLayout
   title={`Docs | ${site.title}`}
   description={site.description}
   siteTitle={site.title}
@@ -37,10 +37,10 @@ const docs = [
   socialLinks={site.socialLinks}
   googleVerification={site.googleVerification}
 >
-  <section class="paper-hero">
+  <section class="papyrus-hero">
     <h1>Docs</h1>
-    <p class="paper-description">A small Pure-style content index for the current blog structure.</p>
+    <p class="papyrus-description">A small Pure-style content index for the current blog structure.</p>
   </section>
 
-  <PaperContentIndex items={docs} />
-</PaperBaseLayout>
+  <PapyrusContentIndex items={docs} />
+</PapyrusBaseLayout>

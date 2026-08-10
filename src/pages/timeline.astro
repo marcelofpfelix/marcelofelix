@@ -1,13 +1,13 @@
 ---
 import { getCollection } from "astro:content";
-import { PaperArchiveList, PaperBaseLayout } from "astro-theme-papyrus/components";
+import { PapyrusArchiveList, PapyrusBaseLayout } from "astro-theme-papyrus/components";
 import { publishedPosts } from "astro-theme-papyrus/utils";
 import { site } from "../site.config";
 
 const posts = publishedPosts(await getCollection("posts"));
 ---
 
-<PaperBaseLayout
+<PapyrusBaseLayout
   title={`Timeline | ${site.title}`}
   description={site.description}
   siteTitle={site.title}
@@ -18,10 +18,10 @@ const posts = publishedPosts(await getCollection("posts"));
   socialLinks={site.socialLinks}
   googleVerification={site.googleVerification}
 >
-  <section class="paper-hero">
+  <section class="papyrus-hero">
     <h1>Timeline</h1>
-    <p class="paper-description">All published posts by year.</p>
+    <p class="papyrus-description">All published posts by year.</p>
   </section>
 
-  <PaperArchiveList posts={posts} />
-</PaperBaseLayout>
+  <PapyrusArchiveList posts={posts} />
+</PapyrusBaseLayout>

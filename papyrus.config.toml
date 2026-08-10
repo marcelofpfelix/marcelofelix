@@ -1,0 +1,81 @@
+[site]
+title = "Marcelo Felix"
+description = "Technical notes on DevOps, telecom, local-first tooling, and AI workflows."
+url = "https://marcelofelix.com"
+lang = "en"
+dir = "ltr"
+timezone = "Europe/Lisbon"
+
+[brand]
+title = "~ $"
+mark = "terminal"
+show_title = false
+
+[theme]
+profile = "catppuccin"
+font_profile = "code"
+
+[post_card]
+tags = false
+read_time = false
+fresh_indicators = true
+fresh_indicator_text = true
+updated_date_only = true
+limit = 20
+
+[[nav]]
+href = "/posts/"
+label = "/posts"
+
+[[nav]]
+href = "/projects/"
+label = "/projects"
+
+[[nav]]
+href = "/about/"
+label = "/about"
+
+[[social]]
+href = "https://github.com/marcelofpfelix"
+label = "GitHub"
+icon = "github"
+
+[[project]]
+title = "papyrus"
+description = "Reusable Astro theme package used by this site for posts, docs, profile pages, projects, RSS, search, and tags."
+href = "/posts/hello-papyrus/"
+repo = "https://github.com/marcelofpfelix/papyrus"
+image = "/images/papyrus-layout.svg"
+pinned = true
+status = "active"
+
+  [[project.links]]
+  label = "package"
+  href = "/posts/hello-papyrus/"
+
+  [[project.links]]
+  label = "docs"
+  href = "/docs/"
+
+  [[project.links]]
+  label = "website"
+  href = "/"
+
+  [[project.links]]
+  label = "repo"
+  text = "marcelofpfelix/papyrus"
+  href = "https://github.com/marcelofpfelix/papyrus"
+
+[[project]]
+title = "tmx"
+description = "Rust replacement idea for local tmux helper scripts and terminal workflow glue."
+href = "https://github.com/marcelofpfelix/tmx"
+repo = "https://github.com/marcelofpfelix/tmx"
+image = "/images/papyrus-dark.svg"
+pinned = false
+status = "planned"
+
+  [[project.links]]
+  label = "repo"
+  text = "marcelofpfelix/tmx"
+  href = "https://github.com/marcelofpfelix/tmx"
