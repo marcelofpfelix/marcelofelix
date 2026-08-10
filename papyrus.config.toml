@@ -1,5 +1,5 @@
 [site]
-title = "Marcelo Felix"
+title = "hello, world"
 description = "Technical notes on DevOps, telecom, local-first tooling, and AI workflows."
 url = "https://marcelofelix.com"
 lang = "en"
@@ -42,10 +42,9 @@ icon = "github"
 
 [[project]]
 title = "papyrus"
-description = "Reusable Astro theme package used by this site for posts, profile pages, projects, RSS, search, and tags."
+description = "Reusable Astro theme for a personal blog and cv"
 href = "/posts/hello-papyrus/"
 repo = "https://github.com/marcelofpfelix/papyrus"
-image = "/images/papyrus-layout.svg"
 pinned = true
 status = "active"
 
@@ -54,24 +53,19 @@ status = "active"
   href = "/posts/hello-papyrus/"
 
   [[project.links]]
-  label = "website"
-  href = "/"
-
-  [[project.links]]
   label = "repo"
   text = "marcelofpfelix/papyrus"
   href = "https://github.com/marcelofpfelix/papyrus"
 
 [[project]]
-title = "tmx"
-description = "Rust replacement idea for local tmux helper scripts and terminal workflow glue."
-href = "https://github.com/marcelofpfelix/tmx"
-repo = "https://github.com/marcelofpfelix/tmx"
-image = "/images/papyrus-dark.svg"
+title = "kamalab"
+description = "Kamailio lab to Learn by Example."
+href = "https://github.com/marcelofpfelix/kamalab"
+repo = "https://github.com/marcelofpfelix/kamalab"
 pinned = false
-status = "planned"
+status = "active"
 
   [[project.links]]
   label = "repo"
-  text = "marcelofpfelix/tmx"
-  href = "https://github.com/marcelofpfelix/tmx"
+  text = "marcelofpfelix/kamalab"
+  href = "https://github.com/marcelofpfelix/kamalab"
