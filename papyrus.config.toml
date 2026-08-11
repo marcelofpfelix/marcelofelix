@@ -1,5 +1,6 @@
 [site]
-title = "hello, world"
+title = "Marcelo Félix"
+home_title = "hello, world"
 description = "Technical notes on DevOps, telecom, local-first tooling, and AI workflows."
 url = "https://marcelofelix.com"
 lang = "en"
