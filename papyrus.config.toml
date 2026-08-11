@@ -1,7 +1,7 @@
 [site]
 title = "Marcelo Félix"
 home_title = "hello, world"
-description = "Technical notes on DevOps, telecom, local-first tooling, and AI workflows."
+description = "Hey, I’m Marcelo. Welcome to my corner of the web, where I write about telecom, Linux, automation, and a few side interests along the way."
 url = "https://marcelofelix.com"
 lang = "en"
 dir = "ltr"
@@ -15,6 +15,31 @@ show_title = false
 [theme]
 profile = "catppuccin"
 font_profile = "code"
+
+[pages.posts]
+description = false
+
+[pages.timeline]
+description = false
+
+[pages.tags]
+description = false
+
+[pages.search]
+description = false
+
+[pages.projects]
+description = false
+
+[pages.about]
+description = false
+content = """
+Hey, I’m Marcelo Félix.
+
+I build and operate software, mostly around telecom, Linux, automation, and infrastructure. I’m interested in systems that are practical, observable, and understandable when something breaks.
+
+This site is where I keep notes from that work: technical write-ups, project logs, experiments, and occasional posts about side interests outside the usual engineering lane.
+"""
 
 [post_card]
 tags = false
