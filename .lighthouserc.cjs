@@ -7,7 +7,7 @@ module.exports = {
         "http://127.0.0.1:4325/",
         "http://127.0.0.1:4325/posts/",
         "http://127.0.0.1:4325/search/",
-        "http://127.0.0.1:4325/posts/hello-papyrus/",
+        "http://127.0.0.1:4325/posts/new-web/",
       ],
       numberOfRuns: 1,
       settings: {

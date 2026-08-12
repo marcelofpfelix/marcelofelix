@@ -18,7 +18,6 @@ font_profile = "code"
 
 [source]
 repo = "marcelofpfelix/marcelofelix"
-branch = "dev"
 
 [pages.posts]
 description = false

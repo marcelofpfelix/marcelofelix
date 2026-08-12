@@ -24,7 +24,7 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^7.0.4",
-    "astro-theme-papyrus": "github:marcelofpfelix/papyrus#0.2.1",
+    "astro-theme-papyrus": "github:marcelofpfelix/papyrus#main",
     "rehype-callouts": "^2.2.0"
   },
   "devDependencies": {

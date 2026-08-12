@@ -32,4 +32,4 @@ Run the same score gate locally and in GitHub Actions:
 pnpm test:lighthouse
 ```
 
-The check builds the static site, serves `dist`, and tests `/`, `/posts/`, `/search/`, and `/posts/hello-papyrus/`. Reports are written to `lhci-report/`.
+The check builds the static site, serves `dist`, and tests `/`, `/posts/`, `/search/`, and `/posts/new-web/`. Reports are written to `lhci-report/`.
