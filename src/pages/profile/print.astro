@@ -1,5 +1,5 @@
 ---
-import { PaperCvActions } from "astro-theme-papyrus/components";
+import { PapyrusCvActions } from "astro-theme-papyrus/components";
 import { cvSections, printProfileLinks, profile, profilePages } from "../../data/profile";
 import { compactDurationLabel, profileLinkKindLabel, shouldShowCvItemTitle, cvIconSvg, cvLinkIcon, withBase } from "astro-theme-papyrus/utils";
 import "../../styles/cv-print.css";
@@ -43,7 +43,7 @@ function cvIcon(name: string) {
     <title>{profile.name} - Printable CV</title>
   </head>
   <body style={`--profile-print-color: ${profile.printColor};`}>
-    <PaperCvActions
+    <PapyrusCvActions
       backHref={withBase("/profile/")}
       print
       markdownHref={cvMarkdownHref}

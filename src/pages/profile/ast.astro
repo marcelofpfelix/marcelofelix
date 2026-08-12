@@ -1,8 +1,8 @@
 ---
-import { PaperCvActions } from "astro-theme-papyrus/components";
+import { PapyrusCvActions } from "astro-theme-papyrus/components";
 import { cvSections, printProfileLinks, profile } from "../../data/profile";
 import { compactDurationLabel, profileLinkKindLabel, shouldShowCvItemTitle, withBase } from "astro-theme-papyrus/utils";
-import "astro-theme-papyrus/paper.css";
+import "astro-theme-papyrus/papyrus.css";
 import "../../styles/cv-print.css";
 
 const currentCvHref = profile.canonicalCv;
@@ -60,7 +60,7 @@ const showSummaryParagraph = Boolean(
     <title>{profile.name} - ATS CV</title>
   </head>
   <body>
-    <PaperCvActions
+    <PapyrusCvActions
       backHref={withBase("/profile/")}
       print
       markdownHref={cvMarkdownHref}

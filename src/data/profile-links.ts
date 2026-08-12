@@ -1,1 +1,0 @@
-export { profileLinks } from "./profile";

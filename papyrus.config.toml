@@ -1,0 +1,96 @@
+[site]
+title = "Marcelo Félix"
+home_title = "hello, world"
+description = "Hey, I’m Marcelo. Welcome to my corner of the web, where I write about telecom, Linux, automation, and a few side interests along the way."
+url = "https://marcelofelix.com"
+lang = "en"
+dir = "ltr"
+timezone = "Europe/Lisbon"
+
+[brand]
+title = "~ $"
+mark = "terminal"
+show_title = false
+
+[theme]
+profile = "catppuccin"
+font_profile = "code"
+
+[source]
+repo = "marcelofpfelix/marcelofelix"
+
+[pages.posts]
+description = false
+
+[pages.timeline]
+description = false
+
+[pages.tags]
+description = false
+
+[pages.search]
+description = false
+
+[pages.projects]
+description = false
+
+[pages.about]
+description = false
+content = """
+Hey, I’m Marcelo Félix.
+
+I build and operate software, mostly around telecom, Linux, automation, and infrastructure. I’m interested in systems that are practical, observable, and understandable when something breaks.
+
+This site is where I keep notes from that work: technical write-ups, project logs, experiments, and occasional posts about side interests outside the usual engineering lane.
+"""
+
+[post_card]
+tags = false
+read_time = false
+fresh_indicators = true
+fresh_indicator_text = true
+updated_date_only = true
+limit = 20
+
+[[nav]]
+href = "/posts/"
+label = "/posts"
+
+[[nav]]
+href = "/projects/"
+label = "/projects"
+
+[[nav]]
+href = "/about/"
+label = "/about"
+
+[[social]]
+href = "https://github.com/marcelofpfelix"
+label = "GitHub"
+icon = "github"
+
+[[project]]
+title = "papyrus"
+description = "Reusable Astro theme for a personal blog and cv"
+href = "https://github.com/marcelofpfelix/papyrus"
+repo = "https://github.com/marcelofpfelix/papyrus"
+pinned = true
+status = "active"
+
+  [[project.links]]
+  label = "repo"
+  text = "marcelofpfelix/papyrus"
+  href = "https://github.com/marcelofpfelix/papyrus"
+
+[[project]]
+title = "kamalab"
+description = "Kamailio lab to Learn by Example."
+href = "https://github.com/marcelofpfelix/kamalab"
+repo = "https://github.com/marcelofpfelix/kamalab"
+pinned = false
+status = "active"
+
+  [[project.links]]
+  label = "repo"
+  text = "marcelofpfelix/kamalab"
+  href = "https://github.com/marcelofpfelix/kamalab"

@@ -5,6 +5,7 @@ import { join, relative, sep } from "node:path";
 import { unified } from "@astrojs/markdown-remark";
 import remarkDefinitionList, { defListHastHandlers } from "remark-definition-list";
 import rehypeCallouts from "rehype-callouts";
+import papyrus from "astro-theme-papyrus/integration";
 import remarkArtifactLinks from "astro-theme-papyrus/remark-artifact-links";
 import {
   addCollapse,
@@ -106,11 +107,12 @@ function hiddenPostPaths(dir = "src/content/posts") {
 const hiddenPostPathSet = new Set(hiddenPostPaths());
 
 export default defineConfig({
-  site: "https://blog.marcelofelix.com",
+  site: "https://marcelofelix.com",
   experimental: {
     svgOptimizer: svgoOptimizer(),
   },
   integrations: [
+    papyrus(),
     sitemap({
       filter: (page) => !hiddenPostPathSet.has(new URL(page).pathname),
     }),

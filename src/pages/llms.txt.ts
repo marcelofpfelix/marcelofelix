@@ -3,7 +3,7 @@ import { postHref, publishedPosts } from "astro-theme-papyrus/utils";
 import { site } from "../site.config";
 
 export async function GET({ site: astroSite }: { site?: URL }) {
-  const base = astroSite?.toString().replace(/\/$/, "") ?? "https://blog.marcelofelix.com";
+  const base = astroSite?.toString().replace(/\/$/, "") ?? "https://marcelofelix.com";
   const posts = publishedPosts(await getCollection("posts"));
   const lines = [
     `# ${site.title}`,
@@ -16,7 +16,6 @@ export async function GET({ site: astroSite }: { site?: URL }) {
     `- [Projects](${base}/projects/)`,
     `- [About](${base}/about/)`,
     `- [Profile](${base}/profile/)`,
-    `- [Docs](${base}/docs/)`,
     `- [Timeline](${base}/timeline/)`,
     `- [Search](${base}/search/)`,
     ...posts.map(post => `- [${post.data.title}](${base}${postHref(post)})`),

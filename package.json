@@ -10,8 +10,7 @@
     "cv:check": "papyrus-cv-export src/data/profile.toml public/cv/profile --check",
     "precommit": "pnpm run cv:export && pnpm run check",
     "logo": "papyrus-logo public/logo.svg && papyrus-logo public/favicon.svg && papyrus-mobile-icons public && papyrus-manifest public/site.webmanifest",
-    "cover:post": "papyrus-cover src/content/posts/hello-papyrus.md public/images/hello-papyrus.svg",
-    "content:outline": "papyrus-content src/content/posts docs/content-structure.md",
+    "cover:post": "papyrus-cover src/content/posts/new-web.md public/images/new-web.svg",
     "dates:check": "papyrus-post-date check src/content/posts",
     "post:date": "papyrus-post-date",
     "compress:images": "papyrus-compress public/images",
@@ -25,7 +24,7 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^7.0.4",
-    "astro-theme-papyrus": "github:marcelofpfelix/papyrus#0.2.0",
+    "astro-theme-papyrus": "github:marcelofpfelix/papyrus#main",
     "rehype-callouts": "^2.2.0"
   },
   "devDependencies": {

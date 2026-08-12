@@ -1,24 +1,24 @@
-import { loadPaperConfig } from "astro-theme-papyrus/config";
+import { loadPapyrusConfig } from "astro-theme-papyrus/config";
 
-const paperConfig = await loadPaperConfig();
+const papyrusConfig = await loadPapyrusConfig();
 
 export const site = {
-  ...paperConfig,
-  title: paperConfig.title,
-  description: paperConfig.description ?? "",
-  headerTitle: paperConfig.brandTitle,
-  defaultThemeProfile: paperConfig.defaultThemeProfile,
-  defaultFontProfile: paperConfig.defaultFontProfile,
-  nav: paperConfig.nav,
-  socialLinks: paperConfig.socialLinks,
+  ...papyrusConfig,
+  title: papyrusConfig.title,
+  description: papyrusConfig.description ?? "",
+  headerTitle: papyrusConfig.brandTitle,
+  defaultThemeProfile: papyrusConfig.defaultThemeProfile,
+  defaultFontProfile: papyrusConfig.defaultFontProfile,
+  nav: papyrusConfig.nav,
+  socialLinks: papyrusConfig.socialLinks,
   homePostLimit: 3,
   homeProjectLimit: 3,
-  postListLimit: paperConfig.postCard.limit ?? 20,
+  postListLimit: papyrusConfig.postCard.limit ?? 20,
   post_card: {
-    tags: paperConfig.postCard.tags,
-    read_time: paperConfig.postCard.readTime,
-    fresh_indicators: paperConfig.postCard.freshIndicators,
-    fresh_indicator_text: paperConfig.postCard.freshIndicatorText,
-    updated_date_only: paperConfig.postCard.updatedDateOnly,
+    tags: papyrusConfig.postCard.tags,
+    read_time: papyrusConfig.postCard.readTime,
+    fresh_indicators: papyrusConfig.postCard.freshIndicators,
+    fresh_indicator_text: papyrusConfig.postCard.freshIndicatorText,
+    updated_date_only: papyrusConfig.postCard.updatedDateOnly,
   },
 };
