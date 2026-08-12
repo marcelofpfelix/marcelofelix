@@ -10,7 +10,7 @@
     "cv:check": "papyrus-cv-export src/data/profile.toml public/cv/profile --check",
     "precommit": "pnpm run cv:export && pnpm run check",
     "logo": "papyrus-logo public/logo.svg && papyrus-logo public/favicon.svg && papyrus-mobile-icons public && papyrus-manifest public/site.webmanifest",
-    "cover:post": "papyrus-cover src/content/posts/hello-papyrus.md public/images/hello-papyrus.svg",
+    "cover:post": "papyrus-cover src/content/posts/new-web.md public/images/new-web.svg",
     "dates:check": "papyrus-post-date check src/content/posts",
     "post:date": "papyrus-post-date",
     "compress:images": "papyrus-compress public/images",

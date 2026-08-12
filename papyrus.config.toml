@@ -73,14 +73,10 @@ icon = "github"
 [[project]]
 title = "papyrus"
 description = "Reusable Astro theme for a personal blog and cv"
-href = "/posts/hello-papyrus/"
+href = "https://github.com/marcelofpfelix/papyrus"
 repo = "https://github.com/marcelofpfelix/papyrus"
 pinned = true
 status = "active"
-
-  [[project.links]]
-  label = "package"
-  href = "/posts/hello-papyrus/"
 
   [[project.links]]
   label = "repo"
