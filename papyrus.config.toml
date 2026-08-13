@@ -17,7 +17,7 @@ profile = "catppuccin"
 font_profile = "code"
 
 [profile.images]
-effect = "mono-accent"
+effect = "tricolor"
 
 [source]
 repo = "marcelofpfelix/marcelofelix"
