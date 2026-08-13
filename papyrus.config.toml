@@ -16,26 +16,13 @@ show_title = false
 profile = "catppuccin"
 font_profile = "code"
 
+[profile.images]
+effect = "mono-accent"
+
 [source]
 repo = "marcelofpfelix/marcelofelix"
 
-[pages.posts]
-description = false
-
-[pages.timeline]
-description = false
-
-[pages.tags]
-description = false
-
-[pages.search]
-description = false
-
-[pages.projects]
-description = false
-
 [pages.about]
-description = false
 content = """
 Hey, I’m Marcelo Félix.
 
@@ -43,14 +30,6 @@ I build and operate software, mostly around telecom, Linux, automation, and infr
 
 This site is where I keep notes from that work: technical write-ups, project logs, experiments, and occasional posts about side interests outside the usual engineering lane.
 """
-
-[post_card]
-tags = false
-read_time = false
-fresh_indicators = true
-fresh_indicator_text = true
-updated_date_only = true
-limit = 20
 
 [[nav]]
 href = "/posts/"
