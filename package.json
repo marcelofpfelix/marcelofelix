@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "pnpm run cv:export && pnpm run dates:check && astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "build": "pnpm run cv:export && pnpm run image:effects && pnpm run dates:check && astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
     "cv:export": "papyrus-cv-export src/data/profile.toml public/cv/profile",
     "cv:check": "papyrus-cv-export src/data/profile.toml public/cv/profile --check",
     "precommit": "pnpm run cv:export && pnpm run check",
     "logo": "papyrus-logo public/logo.svg && papyrus-logo public/favicon.svg && papyrus-mobile-icons public && papyrus-manifest public/site.webmanifest",
+    "image:effects": "papyrus-image-effects",
     "dates:check": "papyrus-post-date check src/content/posts",
     "post:date": "papyrus-post-date",
     "test:lighthouse": "rm -rf lhci-report .lighthouseci && pnpm build && lhci autorun",

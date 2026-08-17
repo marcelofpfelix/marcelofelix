@@ -7,7 +7,6 @@ Voice Engineer, with a background in Software Programming and Networking. Broad 
 ## Details
 
 - Location: Working remote at Europe
-- Email: info＠marcelofelix.com
 - Current CV: https://marcelofelix.com/profile
 - Nationality: Portuguese
 - Languages: Proficient in English

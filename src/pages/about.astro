@@ -1,0 +1,235 @@
+---
+import { readFileSync } from "node:fs";
+import { PapyrusBaseLayout, loadPapyrusConfig, pageDescription, pageContent } from "astro-papyrus";
+import { imageEffectClass, imageEffectStyle, isPapyrusImageEffect, type PapyrusImageEffect, withBase } from "astro-papyrus/utils";
+import profile from "../../public/cv/profile.json";
+
+const fastfetchConfig = Object.fromEntries(
+  readFileSync("src/data/about-fastfetch.toml", "utf8")
+    .split("\n")
+    .map(line => line.match(/^\s*([a-z_]+)\s*=\s*"([^"]*)"\s*$/))
+    .filter((match): match is RegExpMatchArray => Boolean(match))
+    .map(match => [match[1], match[2]])
+);
+
+const site = await loadPapyrusConfig();
+const description = pageDescription(site, "about", site.description);
+const content = pageContent(site, "about");
+const paragraphs = content?.split(/\n\s*\n/).map(paragraph => paragraph.trim()).filter(Boolean) ?? [];
+const brandMark = site.brandMark === "terminal" ? "terminal" : "twinkle";
+const avatarEffect: PapyrusImageEffect = isPapyrusImageEffect(fastfetchConfig.effect) ? fastfetchConfig.effect : "dither";
+const githubLink = profile.links.find(link => link.icon === "github");
+const websiteLink = profile.links.find(link => link.icon === "link");
+const contactParts = fastfetchConfig.contact_user && fastfetchConfig.contact_domain
+  ? [fastfetchConfig.contact_user, fastfetchConfig.contact_domain]
+  : undefined;
+const skillsText = profile.sections
+  .find(section => section.id === "skills")
+  ?.groups.flatMap(group => group.items)
+  .map(item => "description" in item ? item.description : item.title)
+  .join(" ")
+  .toLowerCase() ?? "";
+const stack = ["Kamailio", "Go", "Python", "Bash", "Linux", "Docker", "Kubernetes", "Ansible"]
+  .filter(item => skillsText.includes(item.toLowerCase()))
+  .join(", ");
+type FastfetchRow = [string, string | string[] | undefined];
+const fastfetchSource: FastfetchRow[] = [
+  ["Host", "marcelofelix.com"],
+  ["OS", profile.bio],
+  ["Kernel", profile.roles?.join(" / ")],
+  ["Shell", stack],
+  ["Locale", profile.location],
+  ["Contact", contactParts],
+  ["Site", websiteLink?.label],
+  ["GitHub", githubLink?.label],
+  ["CV", new URL(profile.canonicalCv).pathname],
+];
+const fastfetchRows = fastfetchSource.filter((row): row is [string, string | string[]] => Boolean(row[1]));
+---
+
+<PapyrusBaseLayout title="About" description={description} siteTitle={site.title} brandTitle={site.brandTitle} brandMark={brandMark} showBrandTitle={site.showBrandTitle} defaultThemeProfile={site.defaultThemeProfile} defaultFontProfile={site.defaultFontProfile} nav={site.nav} socialLinks={site.socialLinks} features={site.features} googleVerification={site.googleVerification}>
+  <section class="papyrus-hero">
+    <h1>About</h1>
+    {description && <p class="papyrus-description">{description}</p>}
+  </section>
+
+  <section class="papyrus-section">
+    <h2>Website</h2>
+    <p>
+      This is my place for technical notes, project logs, experiments, and
+      occasional writing outside the usual engineering lane.
+    </p>
+  </section>
+
+  <section class="papyrus-section">
+    <h2>whoami</h2>
+    <figure class="about-fastfetch" aria-label="Terminal profile summary">
+      <p class="about-fastfetch-command"><span>$</span> fastfetch --profile {profile.handle}</p>
+      <div class="about-fastfetch-screen">
+        <div class:list={["about-fastfetch-avatar", imageEffectClass(avatarEffect)]} style={imageEffectStyle(avatarEffect, fastfetchConfig.avatar)}>
+          <img src={fastfetchConfig.avatar} alt={profile.name} loading="lazy" decoding="async" />
+        </div>
+        <div class="about-fastfetch-output">
+          <p class="about-fastfetch-title"><span>{profile.handle}</span><span>@</span><span>localhost</span></p>
+          <dl>
+            {fastfetchRows.map(([label, value]) => (
+              <div>
+                <dt>{label}</dt>
+                <dd>
+                  {Array.isArray(value) ? `${value[0]} ＠ ${value[1]}` : value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </figure>
+    {paragraphs.map(paragraph => <p>{paragraph}</p>)}
+    <p class="about-actions">
+      <a href={withBase("/profile/")}>Resume</a>
+    </p>
+  </section>
+</PapyrusBaseLayout>
+
+<style>
+  .about-fastfetch {
+    background: var(--papyrus-bg);
+    border: 1px solid var(--papyrus-border);
+    border-radius: 0;
+    color: var(--papyrus-fg);
+    font-family: var(--papyrus-font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .about-fastfetch-command {
+    color: var(--papyrus-muted);
+    margin: 0;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .about-fastfetch-command span {
+    color: var(--papyrus-accent);
+  }
+
+  .about-fastfetch-screen {
+    align-items: start;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .about-fastfetch-avatar {
+    aspect-ratio: 1;
+    background: var(--papyrus-bg);
+    inline-size: 100%;
+    min-inline-size: 18rem;
+  }
+
+  .about-fastfetch-avatar img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .about-fastfetch-output {
+    background: transparent;
+    border: 0;
+    color: var(--papyrus-fg);
+    font: inherit;
+    margin: 0;
+    min-width: 0;
+    overflow: visible;
+    padding-block: 0.65rem;
+    padding-inline-end: 0.75rem;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .about-fastfetch-title,
+  .about-fastfetch-output dl {
+    margin: 0;
+  }
+
+  .about-fastfetch-title span:first-child,
+  .about-fastfetch-title span:last-child,
+  .about-fastfetch-output dt {
+    color: var(--papyrus-accent);
+  }
+
+  .about-fastfetch-title span:first-child,
+  .about-fastfetch-title span:last-child {
+    font-weight: 700;
+  }
+
+  .about-fastfetch-title span:nth-child(2) {
+    color: var(--papyrus-muted);
+  }
+
+  .about-fastfetch-output dl {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .about-fastfetch-output dl > div {
+    display: grid;
+    gap: 0.25rem;
+    grid-template-columns: 4.75rem minmax(0, 1fr);
+  }
+
+  .about-fastfetch-output dt {
+    font-weight: 600;
+  }
+
+  .about-fastfetch-output dt::after {
+    content: ":";
+    color: var(--papyrus-muted);
+  }
+
+  .about-fastfetch-output dd {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .about-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem 0 0;
+  }
+
+  .about-actions a {
+    align-items: center;
+    border: 1px solid var(--papyrus-border);
+    color: var(--papyrus-fg);
+    display: inline-flex;
+    font-family: var(--papyrus-font-mono);
+    font-size: 0.9rem;
+    gap: 0.4rem;
+    line-height: 1;
+    padding: 0.65rem 0.85rem;
+    text-decoration: none;
+  }
+
+  .about-actions a:hover,
+  .about-actions a:focus-visible {
+    border-color: var(--papyrus-accent);
+    color: var(--papyrus-accent);
+  }
+
+  @media (max-width: 640px) {
+    .about-fastfetch-screen {
+      grid-template-columns: 1fr;
+      padding: 0;
+    }
+
+    .about-fastfetch-avatar {
+      inline-size: min(24rem, 100%);
+      min-inline-size: 0;
+    }
+  }
+</style>
