@@ -1,14 +1,14 @@
 # Marcelo Félix
 
-Telco/CS Eng @telnyx
+Voice Eng @telnyx
 
-Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience.
+Voice Engineer, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with DevOps experience.
 
 ## Details
 
 - Location: Working remote at Europe
-- Email: marcelo＠bandonga.com
-- Current CV: https://bandonga.com/cv/marcelo
+- Email: info＠marcelofelix.com
+- Current CV: https://marcelofelix.com/profile
 - Nationality: Portuguese
 - Languages: Proficient in English
 - Roles: SW Eng (Backend | VoIP), DevOps (SRE | Cloud)
@@ -16,7 +16,7 @@ Telco and CS Engineer working in VoIP Operations, with a background in Software 
 - marcelofpfelix: https://github.com/marcelofpfelix
 - marcelofpfelix: https://t.me/marcelofpfelix
 - marcelofpfelix: https://keybase.io/marcelofpfelix
-- bandonga.com: https://bandonga.com
+- marcelofelix.com: https://marcelofelix.com
 
 ## Profile
 
@@ -26,7 +26,7 @@ Telco and CS Engineer working in VoIP Operations, with a background in Software 
 
 ### Telnyx (https://telnyx.com/)
 
-#### SW Engineer
+#### Voice Engineer
 Remote - May 2021 - Present
 
 DevOps Engineeer, specialised in RTC communications (SIP proxies), using kamailio and developing in python, go.
@@ -40,7 +40,7 @@ Professional Services and Support Eng Voice specialist responsible to diagnose a
 
 ### Celfocus (https://celfocus.com/)
 
-#### Service Operations
+#### VoIP Service Operations
 Lisboa - 2014 - Nov 2018
 
 Capgemini and CELFocus project in the Unified Communications team, with Vodafone One Net and GCC service. SRE-style operations for Red Hat Linux, SIP Trunks, PBX, Weblogic, ActiveMQ JMS Broker and NOKIA mCAS. Development of tools and scripting with bash and python for monitoring and automation. Tier 2 support, fault/change management, release acceptance, on-call, networking troubleshooting, REST/SOAP Web Services, VoIP and SIP flows in the IMS Network.

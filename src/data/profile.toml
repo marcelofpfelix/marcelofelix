@@ -4,12 +4,12 @@ handle = "marcelofpfelix"
 avatar = "/cv/marcelo/marcelo.jpg"
 favicon = "/cv/marcelo/marcelo.ico"
 og_image = "/cv/marcelo/og.png"
-canonical_cv = "https://bandonga.com/cv/marcelo"
-bio = "Telco/CS Eng @telnyx"
-summary = "Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience."
+canonical_cv = "https://marcelofelix.com/profile"
+bio = "Voice Eng @telnyx"
+summary = "Voice Engineer, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with DevOps experience."
 print_color = "#37474F"
-email_user = "marcelo"
-email_domain = "bandonga.com"
+email_user = "info"
+email_domain = "marcelofelix.com"
 links = ["linkedin", "github", "telegram", "keybase", "website"]
 print_links = ["email", "linkedin", "github", "website"]
 location = "Working remote at Europe"
@@ -18,6 +18,10 @@ languages = ["lan_en"]
 roles = ["SW Eng (Backend | VoIP)", "DevOps (SRE | Cloud)"]
 pages = 2
 sections = ["profile", "experience", "skills", "education", "certifications", "organizations", "volunteering"]
+
+[user.profile_tabs]
+timeline = false
+projects = false
 
 [user.linkedin]
 name = "marcelofelix"
@@ -40,8 +44,8 @@ url = "https://keybase.io/"
 icon = "keybase"
 
 [user.website]
-name = "bandonga.com"
-href = "https://bandonga.com"
+name = "marcelofelix.com"
+href = "https://marcelofelix.com"
 icon = "link"
 
 [user.nat_pt]
@@ -81,7 +85,7 @@ logo = "/cv/marcelo/telnyx.png"
 items = ["sw_engineer"]
 
 [user.data.experience.telnyx.sw_engineer]
-title = "SW Engineer"
+title = "Voice Engineer"
 dates = "May 2021 - Present"
 location = "Remote"
 description = "DevOps Engineeer, specialised in RTC communications (SIP proxies), using kamailio and developing in python, go."
@@ -112,7 +116,7 @@ logo = "/cv/marcelo/celfocus.png"
 items = ["service_operations"]
 
 [user.data.experience.celfocus.service_operations]
-title = "Service Operations"
+title = "VoIP Service Operations"
 dates = "2014 - Nov 2018"
 location = "Lisboa"
 description = "Capgemini and CELFocus project in the Unified Communications team, with Vodafone One Net and GCC service. SRE-style operations for Red Hat Linux, SIP Trunks, PBX, Weblogic, ActiveMQ JMS Broker and NOKIA mCAS. Development of tools and scripting with bash and python for monitoring and automation. Tier 2 support, fault/change management, release acceptance, on-call, networking troubleshooting, REST/SOAP Web Services, VoIP and SIP flows in the IMS Network."

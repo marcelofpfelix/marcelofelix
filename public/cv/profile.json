@@ -4,18 +4,18 @@
   "avatar": "/cv/marcelo/marcelo.jpg",
   "favicon": "/cv/marcelo/marcelo.ico",
   "ogImage": "/cv/marcelo/og.png",
-  "canonicalCv": "https://bandonga.com/cv/marcelo",
-  "bio": "Telco/CS Eng @telnyx",
-  "summary": "Telco and CS Engineer working in VoIP Operations, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with troubleshooting experience.",
+  "canonicalCv": "https://marcelofelix.com/profile",
+  "bio": "Voice Eng @telnyx",
+  "summary": "Voice Engineer, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with DevOps experience.",
   "location": "Working remote at Europe",
   "emailParts": {
-    "user": "marcelo",
-    "domain": "bandonga.com",
+    "user": "info",
+    "domain": "marcelofelix.com",
     "domainParts": [
-      "bandonga",
+      "marcelofelix",
       "com"
     ],
-    "display": "marcelo＠bandonga.com"
+    "display": "info＠marcelofelix.com"
   },
   "printColor": "#37474F",
   "pages": 2,
@@ -57,8 +57,8 @@
       "icon": "keybase"
     },
     {
-      "label": "bandonga.com",
-      "href": "https://bandonga.com",
+      "label": "marcelofelix.com",
+      "href": "https://marcelofelix.com",
       "icon": "link"
     }
   ],
@@ -94,7 +94,7 @@
           "logo": "/cv/marcelo/telnyx.png",
           "items": [
             {
-              "title": "SW Engineer",
+              "title": "Voice Engineer",
               "dates": "May 2021 - Present",
               "location": "Remote",
               "description": "DevOps Engineeer, specialised in RTC communications (SIP proxies), using kamailio and developing in python, go.",
@@ -127,7 +127,7 @@
           "logo": "/cv/marcelo/celfocus.png",
           "items": [
             {
-              "title": "Service Operations",
+              "title": "VoIP Service Operations",
               "dates": "2014 - Nov 2018",
               "location": "Lisboa",
               "description": "Capgemini and CELFocus project in the Unified Communications team, with Vodafone One Net and GCC service. SRE-style operations for Red Hat Linux, SIP Trunks, PBX, Weblogic, ActiveMQ JMS Broker and NOKIA mCAS. Development of tools and scripting with bash and python for monitoring and automation. Tier 2 support, fault/change management, release acceptance, on-call, networking troubleshooting, REST/SOAP Web Services, VoIP and SIP flows in the IMS Network.",

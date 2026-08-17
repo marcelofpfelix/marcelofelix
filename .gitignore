@@ -6,3 +6,4 @@ dist/
 pnpm-debug.log*
 lhci-report/
 public/pagefind/
+public/generated/
