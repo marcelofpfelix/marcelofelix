@@ -1,0 +1,97 @@
+{
+  "basics": {
+    "name": "Marcelo Félix",
+    "label": "Voice Eng @telnyx",
+    "image": "/cv/marcelo/marcelo.jpg",
+    "url": "https://marcelofelix.com/profile",
+    "summary": "Voice Engineer, with a background in Software Programming and Networking. Broad knowledge, from Real-Time Protocols to Infra, with DevOps experience.",
+    "location": {
+      "address": "Working remote at Europe"
+    },
+    "profiles": [
+      {
+        "network": "linkedin",
+        "username": "marcelofelix",
+        "url": "https://www.linkedin.com/in/marcelofelix"
+      },
+      {
+        "network": "github",
+        "username": "marcelofpfelix",
+        "url": "https://github.com/marcelofpfelix"
+      },
+      {
+        "network": "telegram",
+        "username": "marcelofpfelix",
+        "url": "https://t.me/marcelofpfelix"
+      },
+      {
+        "network": "keybase",
+        "username": "marcelofpfelix",
+        "url": "https://keybase.io/marcelofpfelix"
+      },
+      {
+        "network": "link",
+        "username": "marcelofelix.com",
+        "url": "https://marcelofelix.com"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Telnyx",
+      "position": "Voice Engineer",
+      "url": "https://telnyx.com/",
+      "startDate": "2021-05-01T00:00:00",
+      "summary": "DevOps Engineeer, specialised in RTC communications (SIP proxies), using kamailio and developing in python, go."
+    },
+    {
+      "name": "Talkdesk",
+      "position": "VoIP Network Engineer",
+      "url": "https://talkdesk.com/",
+      "startDate": "2018-11-01T00:00:00",
+      "endDate": "2021-05-01T00:00:00",
+      "summary": "Professional Services and Support Eng Voice specialist responsible to diagnose and solve complex Call Quality issues in CCaaS and SIP trunk setups between multiple SBC/PBX and a CPaaS, with E2E troubleshooting and Service Delivery."
+    },
+    {
+      "name": "Celfocus",
+      "position": "VoIP Service Operations",
+      "url": "https://celfocus.com/",
+      "startDate": "2014-01-01T00:00:00",
+      "endDate": "2018-11-01T00:00:00",
+      "summary": "Capgemini and CELFocus project in the Unified Communications team, with Vodafone One Net and GCC service. SRE-style operations for Red Hat Linux, SIP Trunks, PBX, Weblogic, ActiveMQ JMS Broker and NOKIA mCAS. Development of tools and scripting with bash and python for monitoring and automation. Tier 2 support, fault/change management, release acceptance, on-call, networking troubleshooting, REST/SOAP Web Services, VoIP and SIP flows in the IMS Network."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Técnico - Universidade de Lisboa",
+      "url": "https://tecnico.ulisboa.pt/",
+      "area": "Master in Computers Science & Electrical Engineering",
+      "summary": "Specialisation in Telecommunications and Computer Science\nKnowledge of Fundamentals of Communications, Propagation and Radiation, and Telecommunication Networks and Systems. Development of programming skills in C, JAVA and MATLAB. SQL, DB modeling and Entity relationship diagrams. Additional basic knowledge of Mathematica, HTML5, Javascript and PHP."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Skills",
+      "keywords": [
+        "sre",
+        "voip",
+        "linux",
+        "networking",
+        "devops",
+        "cloud",
+        "automation"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Proficient in English",
+      "fluency": "en"
+    }
+  ],
+  "interests": [],
+  "meta": {
+    "canonical": "https://marcelofelix.com/profile",
+    "source": "Papyrus CV TOML"
+  }
+}
