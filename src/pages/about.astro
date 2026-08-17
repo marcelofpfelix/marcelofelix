@@ -1,8 +1,8 @@
 ---
 import { readFileSync } from "node:fs";
 import { PapyrusBaseLayout, loadPapyrusConfig, pageDescription, pageContent } from "astro-papyrus";
+import { getTemplateProfile } from "astro-papyrus/template/profile";
 import { imageEffectClass, imageEffectStyle, isPapyrusImageEffect, type PapyrusImageEffect, withBase } from "astro-papyrus/utils";
-import profile from "../../public/cv/profile.json";
 
 const fastfetchConfig = Object.fromEntries(
   readFileSync("src/data/about-fastfetch.toml", "utf8")
@@ -13,20 +13,24 @@ const fastfetchConfig = Object.fromEntries(
 );
 
 const site = await loadPapyrusConfig();
+const profile = await getTemplateProfile();
 const description = pageDescription(site, "about", site.description);
 const content = pageContent(site, "about");
 const paragraphs = content?.split(/\n\s*\n/).map(paragraph => paragraph.trim()).filter(Boolean) ?? [];
 const brandMark = site.brandMark === "terminal" ? "terminal" : "twinkle";
 const avatarEffect: PapyrusImageEffect = isPapyrusImageEffect(fastfetchConfig.effect) ? fastfetchConfig.effect : "dither";
-const githubLink = profile.links.find(link => link.icon === "github");
-const websiteLink = profile.links.find(link => link.icon === "link");
+const profileLinks = profile.links ?? [];
+const profileSections = profile.sections ?? [];
+const githubLink = profileLinks.find(link => link.icon === "github");
+const websiteLink = profileLinks.find(link => link.icon === "link");
 const contactParts = fastfetchConfig.contact_user && fastfetchConfig.contact_domain
   ? [fastfetchConfig.contact_user, fastfetchConfig.contact_domain]
   : undefined;
-const skillsText = profile.sections
+const skillsText = profileSections
   .find(section => section.id === "skills")
-  ?.groups.flatMap(group => group.items)
-  .map(item => "description" in item ? item.description : item.title)
+  ?.groups?.flatMap(group => group.items ?? [])
+  .filter((item): item is NonNullable<typeof item> => Boolean(item))
+  .map(item => item.description ?? item.title)
   .join(" ")
   .toLowerCase() ?? "";
 const stack = ["Kamailio", "Go", "Python", "Bash", "Linux", "Docker", "Kubernetes", "Ansible"]
@@ -42,7 +46,7 @@ const fastfetchSource: FastfetchRow[] = [
   ["Contact", contactParts],
   ["Site", websiteLink?.label],
   ["GitHub", githubLink?.label],
-  ["CV", new URL(profile.canonicalCv).pathname],
+  ["CV", profile.canonicalCv ? new URL(profile.canonicalCv).pathname : withBase("/profile/")],
 ];
 const fastfetchRows = fastfetchSource.filter((row): row is [string, string | string[]] => Boolean(row[1]));
 ---
