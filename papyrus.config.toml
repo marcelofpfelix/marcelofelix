@@ -27,19 +27,11 @@ enabled = true
 provider = "ga4"
 id = "G-C7XNTL3E15"
 
-[features]
-comments = true
-
 [comments]
 enabled = true
-provider = "giscus"
 repo = "marcelofpfelix/marcelofelix"
 repo_id = "R_kgDOTU11RA"
-category = "Announcements"
 category_id = "DIC_kwDOTU11RM4DDluG"
-theme = "preferred_color_scheme"
-light_theme = "light"
-dark_theme = "dark_dimmed"
 
 [pages.about]
 content = """
