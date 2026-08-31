@@ -1,5 +1,5 @@
 allowBuilds:
-  astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/1113b431bc35f8c176ed71c58c800869edbd01b7: true
+  astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/23d686ae0932bf38c9e6487e58d26edf1704c5fc: true
   esbuild: true
   sharp: true
 minimumReleaseAge: 10080
