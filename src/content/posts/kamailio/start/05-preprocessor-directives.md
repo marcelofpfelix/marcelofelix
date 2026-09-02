@@ -1,0 +1,105 @@
+---
+title: "Kamailio by example - Getting Started: Pre-Processor Directives"
+description: "Kamailio by Example - Notes and resources about kamailio"
+slug: "kamailio/directives"
+date: 2023-03-20T21:54:57.000Z
+modDatetime: 2024-06-25T17:07:23.000Z
+tags:
+  - kamailio
+  - configuration
+---
+
+### Pre-Processor Directives
+
+> :information_source: **Note:** Read the [official docs](https://www.kamailio.org/wikidocs/cookbooks/devel/core/) to get the most updated information.
+
+Pre-processor directives start with a `#!` or a `!!`, and are evaluated before the execution of the configuration file.
+#### include_file
+
+`include_file` - include the content of the file in config before parsing.
+The config files can get huge. We can split our code into different files, and organize our routing logic.
+
+```kamailio
+#!include_file extra.cfg
+#!import_file extra.cfg // does not throw error if the included file is not found.
+```
+
+#### define
+
+`define` is used to define a keyword **ID**, with an optional value.
+These IDs can be used set global settings.
+
+```kamailio
+#!define ID       // define an ID
+#!define ID VALUE // define an ID with value
+#!trydef          // add a define if not already defined
+#!redefine        // force redefinition even if already defined
+```
+
+> A directive can also be set in as argument, with `kamailio -A ID=VALUE`
+
+#### defenv
+
+`defenv` is similar, but with the define an ID to the value of an **environment variable** with the name of the ENV Variable.
+
+```kamailio
+#!defenv ENVVAR
+#!defenv ID=ENVVAR   // define an ID with a different name
+#!defenvs ENVVAR     // defenv for strings
+#!trydefenv ENVVAR   // will not error if the env variable is not set
+#!trydefenvns ENVVAR // trydefenv for strings
+```
+
+##### Example
+
+```kamailio
+#!define CODE 200
+#!defenvs ENV_HOSTNAME=HOSTNAME
+#!defenv KAMA_LISTEN
+
+listen=KAMA_LISTEN
+auto_aliases=no
+
+loadmodule "sl"
+modparam("sl", "bind_tm", 0)
+
+#!include_file "0.5.0-defines.inc.cfg"
+```
+
+```kamailio
+request_route {
+  sl_send_reply(CODE, ENV_HOSTNAME);
+}
+```
+
+We see that:
+- The `CODE`  ID is set the response code to the request, `200`.
+- The `ENV_HOSTNAME` ID is set with the value of the ENV `HOSTNAME`. Note the `defenvs` sets the value to a string, since that's required for the `sl_send_reply`.
+- The `KAMA_LISTEN` is a ENV var that is used by the `listen`, set by `defenv`.
+- The routing logic is done a different file, set by `include_file`
+
+**How to test:** Check the [kamalab](/posts/kamailio/kamalab/) to prepare your lab.
+```sh
+# kamalab ❯
+./kamalab
+# select 0.5.0-defines.cfg
+# Listening on
+#              udp: 127.0.0.2 [127.0.0.2]:5060
+#              tcp: 127.0.0.2 [127.0.0.2]:5060
+# Aliases:
+```
+
+In another terminal let's send OPTIONS to the server:
+```sh
+# >
+sipexer 127.0.0.2
+# ...
+# OPTIONS sip:127.0.0.2:5060 SIP/2.0
+# ...
+# SIP/2.0 200 desktop.bandonga.com
+# ...
+```
+
+We can see the response to our request: `200 desktop.bandonga.com`
+#### Resources
+* [Wiki Core Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/core/)

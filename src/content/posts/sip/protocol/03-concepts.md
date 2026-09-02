@@ -1,0 +1,157 @@
+---
+title: "SIP: Concepts"
+description: "Notes and resources about VoIP communications and protocols"
+slug: "sip/concepts"
+date: 2023-03-23T21:00:00.000Z
+modDatetime: 2023-03-23T22:38:06.000Z
+tags:
+  - sip
+  - voip
+---
+
+> :information_source: **Note:** Read the RFCs in the resources to get offical information.
+
+## SIP Concepts
+
+### Transactions
+A transaction consists of a Request, any non-final (Provisional) `1XX` Responses received, and a final Response, as well as the acknowledgments of the Responses (ACK or PRACK), except for ACKs to `2XX` Responses.
+* The stateful mode enables routing features, such as serial/parallel forking, load balancing, and hunt groups.
+* If the UA creates multiple outgoing branches the difference will consist in the `branch` parameter in the topmost `Via` header.
+
+### Dialogs
+A dialog is a peer-to-peer SIP relationship between two UAs that persists for some time.
+* Is composed of a group of Transactions: one to create, another to end, with optional transactions in between to update/refresh the dialog.
+* A dialog is identified at each UA with a dialog ID, which consists of a `Call-ID` value, a local `FROM` tag from the caller and a remote `TO` tag from the callee.
+
+Dialogs are created through the generation of non-failure responses to requests with specific methods.
+* RTC dialog: Initiated by the INVITE request, active and terminated by the BYE request. Only `2XX` and `101-199` responses with a `To` `tag`, to the request, will establish a dialog.
+* PRESENCE dialog: Initiated by the SUBSCRIBE request, activated by an Expires header `>`0`, and terminated by the expiration timeout or an update to Expires header `=0`.
+
+A dialog has the following states:
+* Early - A dialog established by a provisional response to a request is in the "early" state and it is called an early dialog.
+* Estabished - A dialog established by a 200 OK acknowledged.
+* Canceled - When a CANCEL request is sent by the caller, before a final response.
+* Terminated - The dialog was terminated.
+
+The request that is part of an active dialog has a `tag` in the `To` header (unlike the initial request) and is called a Mid Dialog Request.
+
+> The `From` and `To` headers are set from the prespective of the sender of the request, so the value of the `From` `tag` from the initial invite can be found in the `To` `tag` of the Mid Dialog Request, if sent by the callee.
+
+Example 1
+
+![sip_transactions1](/media/sip/transactions-1.svg)
+
+Here, (1) to (3) are one transaction. (4) is the second transaction and (5) and (6) constitute the third transaction. Together, these three transactions constitute one **dialog**.
+
+Example 2
+
+![sip_transactions1](/media/sip/transactions-2.svg)
+
+In this example, the messages from (1) to (4) constitute one transaction. This is a "no-dialog" scenario.
+
+**Session** - A session is just a media stream (e.g. audio or video) flowing between peers, usually consisting of RTP packets.
+
+
+### Proxy Server
+
+A SIP proxy does not set up or terminate sessions, but sits in the middle of a SIP message exchange, receiving messages and forwarding them (signaling and never the media).
+
+#### Stateless Proxy
+A Stateless SIP proxy doesn’t remember anything about the messages, no state information is kept. As soon as the proxy forwards the message, it forgets all about it.
+Because a Stateless SIP proxy it stateless it doesn’t store state, it doesn’t need to lookup state information or write it back, making it much faster and generally able to handle larger call loads than a stateful equivalent.
+
+Stateless proxies are commonly used for load balancing or Redirection server, where you want to just forward the traffic to another destination and don’t need to remember anything about that session.
+
+
+### Transaction Stateful Proxy
+
+A transactional proxy keeps state until a final response is received, and then forgets the state information after the final response.
+
+A Transaction Stateful proxy stores state from the initial INVITE until a response is received and is focused on setting up sessions. As soon as the session is setup it forgets everything. This means we won’t have any state information when the BYE is eventually received.
+
+While this means we won't be able to do the same features as the Dialog Stateful Proxy, these are less resource intensive.
+
+For example if we want to send a call to multiple carriers and wait for a successful response before connecting it to the UA, Call forward, SIP Registrar, Call forking
+
+#### Dialog Stateful SIP Proxy
+
+A dialog stateful proxy keeps state information for the duration of that session (dialog).
+
+While this takes more resources, it means we can do some more advanced functions.
+
+If we wanted to know if a user was on a call or not, a Dialog Stateful proxy knows there’s been a 200 OK, but no Bye yet, so knows if a user is on a call or not, this is useful for presence or if we want to charge based on the length of a call/session, we’d need to store state information, like the Call-ID, the start and end time of the call (CDRs).
+
+
+### Routing
+
+* `Via` is used to route responses
+* Proxies use `Record-Route` to signal that they want to stay on the path of future requests.
+* UAs use `Record-Route` headers to build `Route` headers.
+* `Route` headers are used to route requests
+
+#### Response Routing
+
+When a UA sends a SIP request, the request will traverse one ore more SIP proxies until it reaches the target UA. Each proxy and UA along the path of the request will add its Via header field.
+
+The purpose of Via header fields is to make sure that all replies will traverse exactly the same set of proxies (but in reverse order) as the request.
+
+Via headers are only to route *replies*, and each hop removes it’s own IP on the response before forwarding it onto the next proxy.
+This means the client doesn’t know all the Via headers that were on this SIP request, because by the time it gets back to the client they’ve all been removed one by one as it passed through each proxy.
+
+A client can't send a SIP request using Via's as it hasn't been through the proxies for their details to be added.
+
+![sip_response_r](/media/sip/response.svg)
+
+#### Request Routing
+
+Alice sends an INVITE request to the proxy which forwards the request to user agent B.
+Alice adds the Contact header field in the request.
+
+The Contact header field tells Bob that it can reach UA A on IP `A`.
+
+Bob adds a Contact header field to 200 OK reply, telling UA A that it can reach B on IP address `B`.
+This way both user agents exchange their IP addresses and they do not need the proxy anymore.
+
+They can easily send all further SIP messages directly to each other, because they remember the IP address of the remote party from Contact header field.
+This way all further requests would bypass the proxy server.
+
+If the proxy server needs to see *all* future SIP messages exchanged between the UAs (e.g. CDRs), the proxy server needs tell the UAs that they relay SIP messages through the proxy again.
+
+##### Record-Route
+
+The proxy server can do this by inserting `Record-Route` header field in the INVITE message. If a proxy adds a Record-Route** header, it means it’ll sit in the middle of any future requests in this dialog, and route them back through the proxy.
+
+The Record-Route header field contains the IP address of the proxy and once the INVITE message reaches Bob, it extracts the IP address of the proxy server from Record-Route header field and store it in memory along with the IP address of the remote party (Alice).
+So Bob knows the IP address of Alice and it also knows that it should send all future requests to Alice through the proxy server.
+
+Bob has to tell Alice that all future SIP requests should be sent through the proxy, by copying all Record-Route header fields from the INVITE message to 200 OK. Alice will then extract Record-Route header fields along with Contact from 200 OK and store it in memory.
+
+At this point both UAs know the IP address of the remote party and that they should relay all SIP messages through the proxy.
+
+Now when Alice sends an `ACK` to Bob it will lookup the IP address of the remote party (`Contact` from `200 OK`) from memory and put it in the R-URI of `ACK`. The reason why ACK does not have the same Request-URI as the original INVITE is that the ACK should be sent to the user agent instance that generated 200 OK -- the Request-URI from the INVITE would fork if Bob had several user agents and this is not desirable for ACKs.
+The URI based on Contact field never forks, it is delivered only to the UA instance that generated 200 OK. Alice will also find the URI from the RR header field in memory (stored along with the contact of the remote party). It will create a `Route` header field, put the URI in it and append it to the `ACK`.
+
+If there is a `Route` header field in a SIP message, then the message should not be sent to the R-URI, but to the URI in Route header field and thus the ACK would be sent to the proxy. The proxy will then remove the `Route` header and because there is no other Route header field in our message, it will forward the request to the Request-URI which will take the message to Bob.
+
+Note the difference between `Record-Route` and `Route` header fields:
+* `Record-Route` tell SIP user agent and proxies where *future* SIP requests should be sent.
+* `Route` are constructed from the RR fields and they tell UAs and proxies where the request that contains the Route header fields should be sent.
+
+When a UA sends a SIP request Mid dialog, it will always put the Contact of the remote party in the R-URI and copy all URIs extracted from Record-Route header fields in the `Route` header (list of all proxies) in either forward or reverse order, based on the direction.
+
+**Types** - There are also older SIP implementations, before RFC3261, that worked differently then. In this case the Record-Route does not contain the contact of the remote party but the topmost Route header field, and the value of the remote contact is preserved in the last Route header field in the message.
+* **strict routing**: old specifcation. Specifies that the address of the *next* hop be the R-RUI. This means that Alice is using the address of P1 as a R-RUI, adding the P1 and Bob's addresses to RR headers. P1 should receive the request with its own address in the R-URI. The topmost route header is removed and once its address is set in the R-URI and forward the request to the R-URI.
+* **loose routing**: recommended, adds the `;lr` parameter to the `Record-route`. Specifies that the address of the *last* hop be the R-RUI. Alice is using the contact address of Bob as a R-URI, adding P1 and P2 as RR. P1 receives the request with its own address, removes that header (topmost) and forwards the request to the address in the next router header.
+
+![sip_request_r](/media/sip/request.svg)
+
+**Notes:**
+* The UA replying to the inital request has to mirror all the RR headers in the response.
+* Contact of the remote party is always put in the R-URI of requests in Mid dialogs.
+* All Record-Route header fields from 200 OK are reverse ordered, and appended as Route header fields to the request.
+* The topmost Route header field overrides the R-URI (will only be used if there are no more Route headers)
+* If there is no URI in the Contact or Route headers the proxy should use the From URI.
+
+##### Resources:
+* [rfc3261](https://www.rfc-editor.org/rfc/rfc3261)
+* [rfc5658](https://www.rfc-editor.org/rfc/rfc5658)

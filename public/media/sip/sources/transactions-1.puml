@@ -1,0 +1,15 @@
+@startuml
+
+!includeurl https://raw.githubusercontent.com/marcelofpfelix/plantuml-diagrams/master/skins/skin_dark.puml
+
+autonumber
+hide footbox
+
+UAC     [$alizarin]->   UAS: INVITE
+UAS     [$alizarin]->   UAC: 100 Trying
+UAS     [$alizarin]->   UAC: 200 OK
+UAC     [$nephritis]-> UAS: ACK
+UAS     [$peterriver]-> UAC: BYE
+UAC     [$peterriver]-> UAS: 200 OK
+
+@enduml

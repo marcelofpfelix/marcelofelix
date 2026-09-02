@@ -1,0 +1,155 @@
+---
+title: "SIP: NAT"
+description: "Guide to better understand VoIP communications and protocols"
+slug: "sip/nat"
+date: 2021-05-07T11:07:43.000Z
+modDatetime: 2021-05-07T21:28:04.000Z
+tags:
+  - sip
+  - nat
+  - voip
+---
+
+# Network Address Translation
+
+NAT creates mapping (binding) between inside and outside address and ports.
+Mappings are temporary and expire after a TCP connection is closed with a `FIN` or inactivity  in case of UDP.
+
+The fact NAT operates at layer 4 with TCP, does not mean the session is no longer end-to-end.
+NAT never maintains a transmission control block or maps sequence number. Since it never performs retransmissions or acknowledgments, the TCP connection is with end-to-end full control and reliability.
+
+When NAT creates a new mapping between the source, example `10.0.0.1:41223` and `18.34.6.2:33123`, rewrites the packet with the new data, modifying:
+
+```
+Layer-3 Checksum
+source address
+destination address
+Layer-4 Checksum
+source port
+destination port
+```
+
+### Classification
+
+Modern terminology, by BEHAVE working group, characterize the type of address mapping and filtering employed.
+
+```
+                                     E
+  +------+                 +------+  x
+  |  Y1  |                 |  Y2  |  t
+  +--+---+                 +---+--+  e
+     | Y1:y1            Y2:y2  |     r
+     +----------+   +----------+     n
+                |   |                a
+        X1':x1' |   | X2':x2'        l
+             +--+---+-+
+.............|   NAT  |...............
+             +--+---+-+              I
+                |   |                n
+            X:x |   | X:x            t
+               ++---++               e
+               |  X  |               r
+               +-----+               n
+                                     a
+                                     l
+```
+Address and Port Mapping from [rfc4787](https://tools.ietf.org/html/rfc4787#section-4.1) for `ADDRESS:port`
+
+* **Endpoint Independent Mapping** (EIM NAT): Formula: `X1':x1' = X2':x2' for all Y;y`. The mapping used is dependent only on the source address/port `X:x`, independent of the destination address/port (Best for SIP and RTP Traversal).
+* **Address Dependent Mapping** (ADM NAT): Formula: `X1':x1' = X2':x2' if only if Y2=Y1`. The mapping used is dependent on the source address/port `X:x` as well as the destination the address `Y` (Bad for SIP and RTP Traversal).
+* **Address and Port Dependent Mapping** (APDM NAT): Formula: `X1':x1' = X2':x2' if only if Y2:y2=Y1:y1`. The mapping used is dependent both on the source and destination address/port (Worst for SIP and RTP Traversal).
+
+##### Hairpin Support
+
+Hairpin Support (Tromboning) exists if an internal host can send packets to another internal host using the external address of the other host. The NAT must look up two mappings to determine the destination (Beneficial for SIP and RTP Traversal).
+
+##### IP Address Pooling options
+Networks with multiples public IPs can allocate from a pool and use one of the following policies:
+* **Paired IP address pooling:** means only one external IP address will be used for internal IP addresses. All the packets sent by this host will appear to come from the same IP address to the host external to the network.
+* **Arbitrary IP Address:** means multiple external IPs are mapped to an internal IP address.
+
+##### Port Assignments Options
+
+* **Port preservation:** tries to keep the external/internal port the same. It only works with a large pool of addresses and if it runs out there are two options:
+  * Switch to a non port preservation mode
+  * **Port overloading:**: the same port can be used more than once (not good for SIP and RTP Traversal).
+* **Port parity**: preserve the port parity or evenness (positive for SIP and RTP Traversal since RTP must be even and RTCP odd).
+* **Port contiguity**: NAT attempts to keep sequential inside ports mapped to sequential outside ports (positive for SIP and RTP Traversal since RTCP must be higher than RTP)
+
+> For SIP and RTP Traversal the most important is that the port assignment mode doesn't change.
+
+##### Mapping refresh
+
+NAT mapping uses memory and addressing resources. The TCP mapped can be created `SYN` and removed `FIN` based on the TCP signaling, however UDP communications needs to use a timer, since the last packet received.
+
+It's recommended the value of 5 min, but some devices use 30 seconds. It's a good policy to only allow packets from the internal network to refresh the timer.
+
+##### Filtering Mode
+
+Controls who is permitted to use the mapping.
+* **Endpoint Independent Filtering**:  Any external endpoint is permitted to send packets to the internal host (Best for SIP and RTP Traversal).
+* **Address Dependent Filtering**: Only hosts that have received a packet from the internal host can send a packet using the binding (Bad for SIP and RTP Traversal).
+* **Address and Port Dependent Filtering**: Only hosts that have received a packet from the internal host and port can send a packet using the binding  (Worst for SIP and RTP Traversal)..
+
+##### Legacy Classification
+
+Older NAT terminology classified as:
+* **Full Cone**: Endpoint-Independent Mapping and Endpoint-Independent Filtering.
+* **(Address)-Restricted Cone**: Endpoint-Independent Mapping and Address-Dependent Filtering.
+* **Port-restricted Cone**: Endpoint-Independent Mapping and Address and Port-Dependent Filtering
+* **Symmetric**: Address and Port Dependent Mapping and Address-Dependent Filtering or Address and Port-Dependent Filtering.
+
+## SIP with NAT
+
+Usually NAT doesn't cause issues http connections, however can cause issues with IPSec VPNs (failed signature checks) and specific protocols:
+* Peer-to-Peer protocols, such as SIP.
+* Protocols that can carry imbeds IP address and ports, such as SIP in the headers and SDP body.
+
+[rfc3235](https://datatracker.ietf.org/doc/html/rfc3235) developed NAT-Friendly Application Design Guidelines, mostly violated by SIP:
+* Limit P2P apps and approaches in favor of client/server model
+* Do not rely on E2E IPSec security
+* Use DNS names instead of IP addresses
+* Multicast can be problematic
+* Avoid session bundles (e.g. one session controlling)
+* Use TCP instead of UDP
+
+Summary of how a NAT Should BEHAVE with SIP
+* End point-independent mapping
+* Address-independent or address-dependent filtering
+* Pair IP address pooling
+* Not port preservation
+* Not port overloading
+* Port parity preservation (helpful)
+* UDP refresh timer 5 minutes
+
+Early solutions:
+* **ALG**: (Application Layer Gateway) makes NAT SIP aware. It uses Deep packet inspection, by router firewalls by inspecting VoIP traffic (packets) and if necessary modifying it. However, modifies packets in unexpected ways, corrupting them and making them unreadable. It is also common to interfere with other NAT technologies, and various providers recommend turning it off.
+* **Discovery approach**:  A UA would send test packets to determine if it was behind a NAT and to discover mapped addresses, using STUN.
+
+> The [rfc6314](https://datatracker.ietf.org/doc/html/rfc6314) discusses the  NAT Traversal Practices for Client-Server SIP and https://datatracker.ietf.org/doc/html/rfc5853 Requirements for SBC Deployments.
+
+Specifications for the traversal of NATs
+* Session Traversal Utilities for NAT (STUN) [RFC5389],
+* Interactive Connectivity Establishment (ICE) [RFC5245]
+* symmetric response [RFC3581]
+* symmetric RTP [RFC4961], Traversal Using Relay NAT (TURN) [RFC5766]
+* SIP Outbound [RFC5626]
+* The Session Description Protocol (SDP) attribute for RTP Control Protocol (RTCP) [RFC3605]
+* Multiplexing RTP Data and Control Packets on a Single Port [RFC5761]
+
+
+SIP Signaling
+*  Symmetric Response
+*  Client-Initiated Connections
+Media Traversal
+*  Symmetric RTP/RTCP
+*  RTCP
+*  STUN/TURN/ICE
+
+
+##### STUN
+
+[rfc8489](https://datatracker.ietf.org/doc/html/rfc8489)
+
+
+STUN did not work for all type of NAS. To overcome STUN limitations, ICE was developed, which runs a series of E2E tests, known as connectivity checks, using STUN between 2 UAs, using the "home pushing" approach.

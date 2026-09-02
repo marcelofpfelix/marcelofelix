@@ -1,0 +1,103 @@
+---
+title: "Kamailio by example - Getting Started: Directive Operations"
+description: "Kamailio by Example - Notes and resources about kamailio"
+slug: "kamailio/directive-ops"
+date: 2024-06-25T17:44:25.000Z
+modDatetime: 2024-06-26T14:00:42.000Z
+tags:
+  - kamailio
+  - configuration
+---
+
+### Directive Operations
+
+> :information_source: **Note:** Read the [official docs](https://www.kamailio.org/wikidocs/cookbooks/devel/core/) to get the most updated information.
+
+#### defexp
+
+`defexp` is similar to a `define`, but the ID is set to the value of an **expression**.
+
+```kamailio
+#!defexp ID exp
+#!defenvs ID exp     // defenv for strings
+```
+
+> Check [snexpr](https://github.com/miconda/snexpr) for expression examples.
+
+#### ifdef
+It can also be user to define what parts of the config file are loaded, ensuring lower memory usage and faster execution.
+
+```kamailio
+#!ifdef ID   // check if an ID is defined
+#!ifexp exp  // check if expression is true
+#!ifndef     // check if an ID is not defined
+#!else       // switch to false branch of if region
+#!endif      // end if region
+```
+### subst
+`subst` perform substitutions **inside the strings**, even when concatenated. The define is replacing only IDs (alphanumeric tokens not enclosed in quotes).
+Be careful with the sub-string, to make sure it doesn't match previous `subst` substitutions.
+
+```kamailio
+#!subst "/regexp/substring/flags"
+#!substdef  "/regexp/substring/flags" // also do a #!define ID substring
+#!substdefs "/regexp/substring/flags" // substdef for strings
+```
+
+##### Example
+
+```kamailio
+#!KAMAILIO
+
+#!define MAINTENANCE 1
+#!defenv KAMA_LISTEN
+#!defexp ADDR "udp:" + KAMA_LISTEN
+#!subst "/Hello/Hi/g"
+
+listen=ADDR
+auto_aliases=no
+
+loadmodule "sl"
+modparam("sl", "bind_tm", 0)
+
+#!include_file "0.6.0-define-ops.inc.cfg"
+```
+
+```kamailio
+request_route {
+  #!ifexp MAINTENANCE
+    sl_send_reply(500, "Hello");
+  #!else
+    sl_send_reply(200, "Hello");
+  #!endif
+}
+```
+
+**How to test:** Check the [kamalab](/posts/kamailio/kamalab/) to prepare your lab.
+```sh
+# kamalab ❯
+./kamalab
+# select 0.6.0-define-ops.cfg
+# Listening on
+#              udp: 127.0.0.2 [127.0.0.2]:5060
+# Aliases:
+```
+
+In another terminal let's send OPTIONS to the server:
+```sh
+# >
+sipexer 127.0.0.2
+# ...
+# OPTIONS sip:127.0.0.2:5060 SIP/2.0
+# ...
+# SIP/2.0 500 Hi
+# ...
+```
+
+We see that:
+- In `ADDR` an expression is used to concatenate strings.
+- A `subst` was used to replace `Hello` in the response cause.
+- The `sl_send_reply(200, "Hello")` was not loaded, since the define `MAINTENANCE` was set to 1.
+
+#### Resources
+* [Wiki Core Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/core/)

@@ -1,0 +1,84 @@
+---
+title: "Network by Example - Datagrams: Frangmentation"
+description: "Network by Example - Notes and resources about IP Networks routing and switching"
+slug: "networking/fragmentation"
+date: 2023-06-25T00:00:00.000Z
+modDatetime: 2023-11-20T11:50:56.000Z
+tags:
+  - networking
+  - ip
+  - fragmentation
+---
+
+### Datagrams: Frangmentation
+
+Frangmentation can be done by the sender or by any intermediate routers (unlike IPv6). Fragments themselves can be fragmented.
+
+The UDP header, with the ports, appears only in the first fragment. This is a firewall/NAT complication, packets can simply be dropped by the network.
+
+
+![3.1.0-fragmentation](/media/networking/fragmentation.svg)
+
+When sending 3000 bytes of app data (`+8+20=3028`) fragmentating it in 3 packets is required, with the extra 40 bytes of IP header.
+
+The Fragments are controlled by the Identification, Fragment Offset and More Fragments fields in the IP header:
+* **Identification:** A unique number for the datagram, usually a counter. It's copied into each fragment and used to group them.
+* **Fragment Offset:** The offset of the fragment in the original datagram, in units of 8 bytes (`185*8=1480`).
+* **More Fragments:** Set to 1 in all fragments except the last one.
+
+> If 1 fragment is lost, the whole datagram is lost.
+Since fragmentation can occur at any router, there's no way for the sender to know it needs to resend a fragment.
+
+The last argument is delivered first, so the receiving host can assert the max buffer size.
+tshark has to reassemble frags to recover the port numbers.
+
+#### Reassembly
+
+If a UDP message arrives over multiple fragments, the app will not see it until the OS first receives all fragments and reassembles the data (done at the OS level).
+This contrasts with TCP, in which stream data is handed to the application as it arrives.
+
+A timer starts when the first fragment is received, to prevent buffer attacks.
+If the last fragment is not received within 60 seconds, the fragments are discarded and an ICMP error `time exceeded code(1)` is sent to the sender.
+
+
+#### Testing
+
+```console
+## capture
+~ $ sudo tshark -i any -f "host 192.0.2.1"
+    8 25.891998085 192.168.1.196 → 192.0.2.1      IPv4 1516 Fragmented IP protocol (proto=UDP 17, off=0, ID=1fe2)
+    9 25.892020193 192.168.1.196 → 192.0.2.1      IPv4 1516 Fragmented IP protocol (proto=UDP 17, off=1480, ID=1fe2)
+   10 25.892022837 192.168.1.196 → 192.0.2.1      UDP 37 49166 → 5000 Len=2953
+```
+
+```console
+## client sends a udp datagram to the server
+~ $ dd if=/dev/urandom bs=2953 count=1 | nc -q 0 -w 0 -u 192.0.2.1 5000
+```
+
+In this example we are using `dd` to generate a random data of 2953 bytes, and send it to the server using `nc` over UDP.
+It was send in 3 fragments, the first with 1472, second with 1480 and the last one with 1.
+
+Note that the udp header is only present in the first fragment, so we shouldn't filter by ports.
+
+#### Analize pcap
+
+Check for fragments that are not reassembled
+```console
+tshark -2 -r trace.pcap -Y "(ip.flags == 0x1 or ip.frag_offset >0) and not ip.reassembled_in and not ip.fragments"
+  ## -2: two-pass analysis (tshark must read a fragment and match it to a later packet that it has not yet read)
+  ## (ip.flags == 0x1 or ip.frag_offset >0): detect a fragment
+  ## not ip.reassembled_in and not ip.fragments: detect a fragment that is not reassembled
+```
+
+#### Common UDP attacks
+
+* Massive traffic
+* Magnification attacks
+* Fragments with no data
+* Fragments with overlapping fragments Offset
+* Ping of Death
+
+### References
+* [rfc791](https://datatracker.ietf.org/doc/html/rfc791) INTERNET PROTOCOL
+* [TCP/IP Illustrated, Volume 1: The Protocols](https://www.amazon.com/-/pt/dp-0321336313/dp/0321336313/), by W. Richard Stevens

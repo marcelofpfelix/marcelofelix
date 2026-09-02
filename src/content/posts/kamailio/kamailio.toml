@@ -1,0 +1,18 @@
+name = "Kamailio by example"
+description = "Configuration notes and practical examples for Kamailio."
+
+[settings]
+post_footer = "collection"
+post_footer_collapsible = true
+
+[[sections]]
+name = "Start"
+description = "Resources, tools, configuration basics, directives, and keywords."
+
+[[sections]]
+name = "KEMI"
+description = "Using Lua and Python routing with the Kamailio embedded interface."
+
+[[sections]]
+name = "Data types"
+description = "Variables, AVPs, and shared hash tables."

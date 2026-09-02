@@ -1,0 +1,209 @@
+---
+title: "Kamailio by example - Data types"
+description: "Kamailio by example - Notes and resources about kamailio"
+slug: "kamailio/vars"
+date: 2023-03-17T16:04:14.000Z
+modDatetime: 2024-06-26T19:34:40.000Z
+tags:
+  - kamailio
+  - configuration
+---
+
+## Data types
+
+> :information_source: **Note:** Read the [official docs](https://www.kamailio.org/wikidocs/cookbooks/devel/core/) to get the most updated information.
+> Read the [sip concepts](/posts/sip/concepts/) to get a better understanding of the concepts discussed.
+
+### Values
+
+There are these types of values:
+* `integer` - numbers of 32bit size
+* `boolean` - an integer *aliases* to 1 (true, on, yes) or 0 (false, off, no)
+* `ID` an aphanumeric special token not enclosed in quotes.
+* `string`  - an alphanumeric tokens in `"double"` or `'single'` quotes (can be split in many tokens `"abc" "def"`)
+* `network attribute` an address `1.1.1.1`, `1.1.1.1/32`, ipv4 or ipv6.
+
+### Pseudo-variable
+
+A variable is a special token that is expanded at runtime with a specific value.
+The variables start with `$` character. If you want to have the character `$` just double it `$$`.
+
+Also called a **Pseudo-variable** because some are:
+ * read-only
+ * hold multiple values
+ * a reference for a sip message
+ * stored in private or shared memory
+ * can be represented as `$class | $class(key) | $(class(key)) | $(class(name)[index])`
+
+**Classes:** There's multiple classes of variables, we will only talk about the most used ones, but you can find more in the [official docs](https://www.kamailio.org/wikidocs/cookbooks/devel/pseudovariables/).
+Variables are implemented by various modules, most of them are provided by `pv` and read-only (such as `$(hdr(name)[N])`  content of the headers), with the exceptions:
+  * `$var(name)` - script private variable: This kind of variables are faster, being referenced directly to memory location.
+  * `$shv(name)` - shared value variable
+  * `$sht(hash=>name)` - shared hash table variable
+  * `$avp(x) | $xavp` - Attribute-Value Pair Unordered List
+  * and some sip message attributes `$ru` and others.
+
+**Private memory:** no reloading, one copy per process
+* `$ru` and other sip message attributes
+* `$(hdr(name)[N])`
+* `$var(name)`
+
+**Shared memory:** I you need to use a variable in a request and response, a shared variable should be used. The sip message is processed in private memory and moved to shared memory when when a transaction is created.
+  * `$shv(name)`
+  * `$avp(x) | $xavp`
+  * `$sht(hash=>name)`
+
+#### var - script private variable
+
+`$var(name) | $vz(name)` - Very fast variable with single value stored in private memory (each process has its own value)
+* Initial value is 0. Can have integer or string value.
+* Can be initialized to another value using modparam `"varset"`
+* Assignment to `$null` sets it to 0 (variant `$vn(name)` can hold `$null` value
+
+```kamailio
+// simple sip server
+#!KAMAILIO
+
+loadmodule "xlog"
+loadmodule "pv"
+loadmodule "sl"
+
+request_route {
+  $var(name) = "Hello, World!";
+
+  if(uri==myself) {
+      xlog("local message: uri == myself\n");
+  };
+
+  xlog("$$var(name): $var(name)\n");
+  sl_send_reply(200, "OK $var(name)");
+}
+
+```
+
+##### How to test
+
+```console
+  ## run a kamailio docker image with the kamailio.cfg above
+~ $ sudo docker run -it --rm --name kam --net host -v "$(pwd):/etc/kamailio/"ghcr.io/kamailio/kamailio:5.6.4-bullseye
+  ## send options to your private ip
+~ $ sipexer 10.0.0.1
+  ## run a trace to see the sip messages
+~ $ sudo sngrep
+  ## this will get logged
+ 1(8) ERROR: <script>: local message: uri == myself
+ 1(8) ERROR: <script>: $var(name): Hello, World!
+```
+
+In this example, we can see a simple sip server, that
+* uses a core keyword/value `uri` to check if the request is local or not. If it is local, it will log a message.
+* the keyword/value only works in the if clause.
+* The variable `$var(name)` is set to a string value and then logged.
+
+#### hdr - SIP header value
+
+`$(hdr(name)[index])` It is read-only variables for sip headers, for changing headers use functions from `textops/textopsx` modules
+* If SIP header name does not exist, it returns `$null`
+* If index is not provided, it returns the first header body (index `0`)
+* The index can be a variable holding an integer value
+* The index can be negative, `-1` is last header
+* If the index is `*`, the returned value is a comma separated list of all headers with that name
+
+#### SIP message attributes
+`$name` the `pv` module exports multiple variables that are read-only and hold the value of the sip message attributes, with the exception the following rw variables:
+
+```kamailio
+$br // request's first branch
+$bf // branch flags of branch 0 (RURI) - decimal output
+$bF // branch flags of branch 0 (RURI) - hexa output
+$du // destination uri
+$fd // domain in URI of 'From' header
+$fn // display name of 'From' header
+$fs // the forced send socket for the SIP message
+$fu // URI of 'From' header
+$fU // username in URI of 'From' header
+$mf // message/transaction flags set for current SIP request
+$mF // message/transaction flags set for current SIP request in hexa-decimal
+$rd // domain in request's URI (without port)
+$rp // port of R-URI
+$ru // request's URI
+$rU // username in request's URI
+$td // domain in URI of 'To' header
+$tn // display name of 'To' header
+$tu // URI of 'To' header
+$tU // username in URI of 'To' header
+```
+
+#### shv - shared value variable
+
+`$shv(name)` - Very fast rw operations (slower that `$var(name`) variable with single value stored in shared memory `shm` (survives multiple SIP message processing)
+* Initial value is 0. Can have integer or string value.
+* Needs to be defined (and can be initialized to another value) using modparam of pv module.
+* Assignment to $null sets it to 0
+* Stored in Kamailio instance context protected by mutex (all processes have the same value)
+* Can be read and updated via RPC commands
+
+
+```kamailio
+// simple stateless proxy
+#!KAMAILIO
+
+loadmodule "xlog"
+loadmodule "pv"
+loadmodule "sl"
+
+modparam("pv", "shvset", "shv_a=s:")
+
+request_route {
+  xlog("Got a request $rm to $ru, shv_a is $shv(a)\n");
+  xlog("The via is $(hdr(via)[0])\n");
+
+  $var(a) = "var_a Hello, World!";
+  $shv(a) = "shv_a Hello, World!";
+
+  xlog("request $$var(a): $var(a)\n");
+  xlog("request $$shv(a): $shv(a)\n\n");
+
+  // forward the request
+  forward("10.0.0.2", 5001);
+}
+
+reply_route{
+  xlog("Got a reply $rs $rm\n");
+
+  xlog("reply $$var(a): $var(a)\n");
+  xlog("reply $$shv(a): $shv(a)\n");
+}
+```
+
+##### How to test
+
+```console
+  ## run a kamailio docker image with the kamailio.cfg above
+~ $ sudo docker run -it --rm --name kam --net host -v "$(pwd):/etc/kamailio/"ghcr.io/kamailio/kamailio:5.6.4-bullseye
+  ## sip a sip client to answer the request
+~ $ docker run -ti --rm --net host --name pjsua marcelofpfelix/pjsua --log-level=3 --app-log-level=3 --no-stderr --color --light-bg --snd-auto-close=0 --no-vad --auto-answer=200 --max-calls=4 --duration=90 --id='sip:pjsua@pjsua:5060;transport=udp' --use-timer=1 --clock-rate 44100 --snd-clock-rate 44100 --null-audio --rtcp-mux --add-codec=PCMU/8000/1 --no-tcp --auto-update-nat=1 --disable-stun --local-port=5001  --bound-addr=10.0.0.2 --rtp-port=59634
+  ## send options to your private ip
+~ $ sipexer 10.0.0.1
+  ## run a trace to see the sip messages
+~ $ sudo sngrep
+
+  ## this will get logged
+ 1(8) ERROR: <script>: Got a request OPTIONS to sip:10.0.0.1:5060, shv_a is 0
+ 1(8) ERROR: <script>: The via is SIP/2.0/UDP 10.0.0.1:54967;rport;branch=z9hG4bKSG.19ab60fa-587b-4b15-9983-0427de2972e4
+ 1(8) ERROR: <script>: request $var(a): var_a Hello, World!
+ 1(8) ERROR: <script>: request $shv(a): shv_a Hello, World!
+
+ 2(9) ERROR: <script>: Got a reply 200 OPTIONS
+ 2(9) ERROR: <script>: reply $var(a): 0
+ 2(9) ERROR: <script>: reply $shv(a): shv_a Hello, World!
+```
+
+We can see that
+* The `$var(a)` in the reply_route lost in the value set in the request_route, since it is stored in the private memory.
+* The `$shv(a)` was able to keep the value set in the request_route, since it is stored in the shared memory.
+* We can use SIP header value `$(hdr(via)[0])` and SIP message attributes `$rm` to get sip message details.
+
+##### resources
+* [Wiki Pseudo-Variables Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/pseudovariables/)
+* [Wiki Core Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/core/)

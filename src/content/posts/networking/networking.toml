@@ -1,0 +1,14 @@
+name = "Networking by example"
+description = "Notes about IP networking, datagrams, MTU, and fragmentation."
+
+[settings]
+post_footer = "collection"
+post_footer_collapsible = true
+
+[[sections]]
+name = "Start"
+description = "Networking references and starting points."
+
+[[sections]]
+name = "Datagrams"
+description = "UDP, MTU, and IP fragmentation."

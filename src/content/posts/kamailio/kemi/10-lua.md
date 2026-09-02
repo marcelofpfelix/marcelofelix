@@ -1,0 +1,106 @@
+---
+title: "Kamailio by example - KEMI: Introduction with lua"
+description: "Kamailio by example - Notes and resources about kamailio"
+slug: "kamailio/kemi"
+date: 2024-06-10T10:12:04.000Z
+modDatetime: 2024-06-26T08:26:32.000Z
+tags:
+  - kamailio
+  - kemi
+  - lua
+---
+
+## KEMI
+
+> :information_source: **Note:** Read the [official docs](https://kamailio.org/docs/tutorials/devel/kamailio-kemi-framework) to get the most updated information.
+
+Kamailio Embedded Interface (KEMI) allows you to use various scripting languages to write Kamailio configuration scripts. This flexibility lets you leverage the features and libraries of languages like **Lua, Python** and others, for your SIP server configurations.
+
+> While the native scripting language offers a large set of functions but its limits are met in some cases, especially when in need to integrate with external systems.
+> Another missing feature in the native is reloading without a restart.
+
+The main benefits of using KEMI framework:
+- Reload of routing scripts without restarting of Kamailio;
+- More complete and flexible scripting languages, with larger set of libraries that can be used from the scripting languages;
+- Possibility to test the code;
+
+### Interpreter
+
+The KEMI allows the equivalent of **routing** blocks to be written in a different scripting language, as functions.
+Each supported language has a **module** that links Kamailio to the scripting interpreter:
+
+```kamailio
+// kamailio.cfg
+
+// global parameters
+// module settings
+
+loadmodule <KEMI_MODULE>
+modparam(<KEMI_MODULE>, "load", <SCRIPT_PATH>)
+
+cfgengine <KEMI_INTERPERTER>
+// routing in <SCRIPT_PATH>
+```
+#### Functions
+
+Several functions directly to `KSR` module with the format `KSR.function(params)`, , like `KSR.is_myself("sip:127.0.0.1:5060")` which are mostly the main functions from the core and for writing log messages (from `xlog`).
+
+There's also exported functions from modules, with the format `KSR.module.function(params)`  The function name may not be exact since the native configuration allow dynamic arguments, unlike the scripting versions, like `KSR.dispatcher.ds_is_from_list_uri(int groupid, int mode, str "uri")`.
+
+The `KSR.x` submodule provides special functions that need custom code per interpreter.
+- `KSR.x.modf(str "fname", params...)` Execute a function, if not available in KSR.
+- `KSR.x.exit()` Equivalent of `exit` from native, since the `exit` will exit the app in some languages. Use `return` as an alternative.
+- `KSR.x.drop()` Equivalent of `drop` from native kamailio.
+
+### Lua
+
+As we saw in the KEMI intro, we just need load the module, set the load path, and the `cfgengine`:
+
+```kamailio
+#!defenvs KAMA_LISTEN
+listen=KAMA_LISTEN
+auto_aliases=no
+
+loadmodule "sl"
+modparam("sl", "bind_tm", 0)
+
+loadmodule "app_lua"
+modparam("app_lua", "load", "/etc/kamailio/cfg/1-kemi/100-kemi-lua.lua")
+
+cfgengine "lua"
+```
+
+```lua
+function ksr_request_route()
+    KSR.sl.send_reply(200, "Hello, World!")
+end
+```
+
+**How to test:** Check the [kamalab](/posts/kamailio/kamalab/) to prepare your lab.
+```sh
+# kamalab ❯
+./kamalab
+# select kemi-lua
+# Listening on
+#              udp: 127.0.0.2 [127.0.0.2]:5060
+#              tcp: 127.0.0.2 [127.0.0.2]:5060
+# Aliases:
+```
+
+In another terminal let's send OPTIONS to the server:
+```sh
+# >
+sipexer 127.0.0.2
+# ...
+# OPTIONS sip:127.0.0.2:5060 SIP/2.0
+# ...
+# SIP/2.0 200 Hello, World!
+# ...
+```
+
+We see that:
+* We get the `200 Hello, World!` response version in lua.
+
+#### Resources
+* [Wiki Pseudo-Variables Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/pseudovariables/)
+* [NickvsNetworking](https://nickvsnetworking.com/kamailio-bytes-kemi-intro/)

@@ -1,0 +1,18 @@
+name = "SIP by example"
+description = "Notes about SIP, VoIP concepts, NAT, and WebRTC."
+
+[settings]
+post_footer = "collection"
+post_footer_collapsible = true
+
+[[sections]]
+name = "Start"
+description = "SIP references and starting points."
+
+[[sections]]
+name = "Protocol"
+description = "SIP messages, transactions, requests, and responses."
+
+[[sections]]
+name = "Network traversal"
+description = "NAT traversal and WebRTC."

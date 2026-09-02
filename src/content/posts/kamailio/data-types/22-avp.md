@@ -1,0 +1,242 @@
+---
+title: "Kamailio by example - Data types: AVP"
+description: "Kamailio by example - Notes and resources about kamailio"
+slug: "kamailio/avp"
+date: 2023-04-19T20:49:34.000Z
+modDatetime: 2024-06-25T16:43:16.000Z
+tags:
+  - kamailio
+  - avp
+---
+
+## Data types: AVP - Attribute Value Pair
+
+### Transactions
+
+> :information_source: **Note:** Read the [official docs](https://www.kamailio.org/wikidocs/cookbooks/devel/core/) to get the most updated information.
+Read the [sip concepts](/posts/sip/concepts/) to get a better understanding of the concepts discussed.
+
+AVPs are special variables that are attached to SIP transactions. Before the transaction is created, the AVP list is attached to SIP request.
+Available only in this context and automatically deleted when transaction is finished
+
+```kamailio
+#!KAMAILIO
+
+loadmodule "tm"
+loadmodule "xlog"
+loadmodule "pv"
+loadmodule "sl"
+
+modparam("pv", "shvset", "shv_a=s:")
+
+request_route {
+
+    xlog("Got a request $rm to $ru\n");
+
+    $var(a) = "var_a Hello, World!";
+    $shv(a) = "shv_a Hello, World!";
+    $avp(a) = "avp_a Hello, World!";
+
+    xlog("request $$var(a): $var(a)\n");
+    xlog("request $$shv(a): $shv(a)\n");
+    xlog("request $$avp(a): $avp(a)\n\n");
+
+    t_on_reply("TM_REPLY");
+
+    // Relay (Forward) the request
+    t_relay_to_udp("10.0.0.2", "5001");
+}
+
+reply_route{
+    // this route will always run first
+    xlog("Got a reply $rs $rm\n");
+
+    xlog("reply $$var(a): $var(a)\n");
+    xlog("reply $$shv(a): $shv(a)\n");
+    xlog("reply $$avp(a): $avp(a)\n\n");
+}
+
+onreply_route[TM_REPLY] {
+    // replies from route[TM_REPLY]
+
+    xlog("Got a TM_REPLY $rs $rm\n");
+
+    xlog("TM_REPLY $$var(a): $var(a)\n");
+    xlog("TM_REPLY $$shv(a): $shv(a)\n");
+    xlog("TM_REPLY $$avp(a): $avp(a)\n\n");
+}
+```
+
+##### How to test
+
+```console
+  ## run a kamailio docker image with the kamailio.cfg above
+~ $ sudo docker run -it --rm --name kam --net host -v "$(pwd):/etc/kamailio/"ghcr.io/kamailio/kamailio:5.6.4-bullseye
+  ## sip a sip client to answer the request
+~ $ docker run -ti --rm --net host --name pjsua marcelofpfelix/pjsua --log-level=3 --app-log-level=3 --no-stderr --color --light-bg --snd-auto-close=0 --no-vad --auto-answer=200 --max-calls=4 --duration=90 --id='sip:pjsua@pjsua:5060;transport=udp' --use-timer=1 --clock-rate 44100 --snd-clock-rate 44100 --null-audio --rtcp-mux --add-codec=PCMU/8000/1 --no-tcp --auto-update-nat=1 --disable-stun --local-port=5001  --bound-addr=10.0.0.2 --rtp-port=59634
+  ## send options to your private ip
+~ $ sipexer -i -vl 3 -co -com -sd -su -cb -sw 10000 10.0.0.1
+  ## run a trace to see the sip messages
+~ $ sudo sngrep
+
+  ## this will get logged
+ 7(14) ERROR: <script>: Got a request INVITE to sip:bob@10.0.0.1:5060
+ 7(14) ERROR: <script>: request $var(a): var_a Hello, World!
+ 7(14) ERROR: <script>: request $shv(a): shv_a Hello, World!
+ 7(14) ERROR: <script>: request $avp(a): avp_a Hello, World!
+
+ 8(15) ERROR: <script>: Got a reply 100 INVITE
+ 8(15) ERROR: <script>: reply $var(a): 0
+ 8(15) ERROR: <script>: reply $shv(a): shv_a Hello, World!
+ 8(15) ERROR: <script>: reply $avp(a): <null>
+
+ 8(15) ERROR: <script>: Got a TM_REPLY 100 INVITE
+ 8(15) ERROR: <script>: TM_REPLY $var(a): 0
+ 8(15) ERROR: <script>: TM_REPLY $shv(a): shv_a Hello, World!
+ 8(15) ERROR: <script>: TM_REPLY $avp(a): avp_a Hello, World!
+```
+
+In this example we are using the `tm` module `t_relay_to_udp` to relay the request transaction statefully.
+The `TM_REPLY` route is when a reply for the current transaction is received, in which we can see the avp value.
+
+### AVP Behavior
+
+It is a list of pairs `(name,value)` that works like a stack (LIFO). Values can be integer or string.
+* There can be many values for same AVP name, an assignment to the same AVP name does not overwrite old value, it will add the new value in the list.
+* To delete the first AVP with name 'id' you have to assign to it '$null':
+
+```kamailio
+$avp(name) = $null;
+$avp(name = 1; // 1
+$avp(name = 2; // 2,1
+```
+
+Can be accessed by index:
+```kamailio
+$(avp(name)[i]) // returns value at index i
+$(avp(name)[*]) // returns comma separated list of all values
+```
+
+We can remove all values or assign a single value in one statement:
+
+```kamailio
+$(avp(i:3)[*]) = 123;
+$(avp(i:3)[*]) = $null;
+```
+
+
+### XAVP - extended attribute value pair
+
+Similar to AVPs, but the values can be integer, string or other XAVPs (child values), with index support for each field name, which can also be grouped in a structure-like way.
+
+```kamailio
+$xavp(data) = "xyz";
+$xavp(user=>uid) = "1"; // new item
+$xavp(user=>uid) = "2"; // new item (root xavp)
+$xavp(user[0]=>name) = "bob"; // add another named value to the last item (child values)
+```
+
+XAVP variants
+* `xavu` - XAVP with unique value (no multi-value): overwrites previous value
+* `xavi` - XAVP with case insensitive names: useful for SIP headers mapping
+
+
+Example:
+
+```kamailio
+#!KAMAILIO
+
+loadmodule "tm"
+loadmodule "xlog"
+loadmodule "pv"
+loadmodule "sl"
+loadmodule "rr"
+loadmodule "avp"
+
+request_route {
+    // Enable record_routing so we see the Mid Dialog requests
+    record_route();
+
+    xlog("Got a request $rm to $ru\n");
+
+    $avp(b) = 1;
+
+    xlog("request $$avp(b): $avp(b), (full stack:$(avp(b)[*]) )\n\n");
+
+    t_on_reply("TM_REPLY");
+
+    // Relay (Forward) the request
+    t_relay_to_udp("10.0.0.2", "5001");
+}
+
+onreply_route[TM_REPLY] {
+    // replies from route[TM_REPLY]
+
+    xlog("Got a TM_REPLY $rs $rm\n");
+
+    $avp(b) = $avp(b) + 1;
+    xlog("TM_REPLY $$avp(b): $avp(b) (full stack: $(avp(b)[*]) )\n");
+
+
+    $avp(c) = 1;
+    $avp(c) = 2;
+    $avp(c) = 3;
+    xlog("TM_REPLY $$avp(c): $avp(c) (full stack: $(avp(c)[*]) )\n");
+    $avp(c) = $null;
+    xlog("TM_REPLY $$avp(c): $avp(c) (full stack: $(avp(c)[*]) )\n");
+    $(avp(c)[*]) = 9;
+    xlog("TM_REPLY $$avp(c): $avp(c) (full stack: $(avp(c)[*]) )\n\n");
+
+    $xavp(server=>host) = "myhost";
+    $xavp(server=>host) = "myhost2";
+    $xavp(server[0]=>user) = "myuser2"; // (server => [(user="myuser2"), (host = "myhost2")])
+    $xavp(server[1]=>user) = "myuser";  // (server => [(user="myuser"), (host = "myhost")])
+    $xavp(server[0]=>port) = 443;
+    xlog("TM_REPLY $$xavp(server): $xavp(server=>host) $xavp(server[*]=>host[*]) | count: $cnt($xavp(server[*])) \n");
+    xlog("TM_REPLY $$xavp(server)[0]: $xavp(server[0]=>host) | $xavp(server[0]=>user) | $xavp(server[0]=>port) \n");
+    xlog("TM_REPLY $$xavp(server)[1]: $xavp(server[1]=>host) | $xavp(server[1]=>user) | $xavp(server[0]=>port) \n\n");
+}
+```
+
+##### How to test
+
+```console
+  ## run a kamailio docker image with the kamailio.cfg above
+~ $ sudo docker run -it --rm --name kam --net host -v "$(pwd):/etc/kamailio/" ghcr.io/kamailio/kamailio:5.6.4-bullseye
+  ## sip a sip client to answer the request
+~ $ docker run -ti --rm --net host --name pjsua marcelofpfelix/pjsua --log-level=3 --app-log-level=3 --no-stderr --color --light-bg --snd-auto-close=0 --no-vad --auto-answer=200 --max-calls=4 --duration=90 --id='sip:pjsua@pjsua:5060;transport=udp' --use-timer=1 --clock-rate 44100 --snd-clock-rate 44100 --null-audio --rtcp-mux --add-codec=PCMU/8000/1 --no-tcp --auto-update-nat=1 --disable-stun --local-port=5001  --bound-addr=10.0.0.2 --rtp-port=59634
+  ## send a INVITE to your private ip
+~ $ sipexer -i -vl 3 -co -com -sd -su -cb -sw 10000 10.0.0.1
+  ## run a trace to see the sip messages
+~ $ sudo sngrep
+
+  ## this will get logged
+ 2(9) ERROR: <script>: Got a request INVITE to sip:bob@10.0.0.1:5060
+ 2(9) ERROR: <script>: request $avp(b): 1, (full stack:1 )
+
+ 1(8) ERROR: <script>: Got a TM_REPLY 100 INVITE
+ 1(8) ERROR: <script>: TM_REPLY $avp(b): 2 (full stack: 2, 1 )
+ 1(8) ERROR: <script>: TM_REPLY $avp(c): 3 (full stack: 3, 2, 1 )
+ 1(8) ERROR: <script>: TM_REPLY $avp(c): 2 (full stack: 2, 1 )
+ 1(8) ERROR: <script>: TM_REPLY $avp(c): 9 (full stack: 9 )
+
+ 1(8) ERROR: <script>: TM_REPLY $xavp(server): myhost2 myhost2 | count: 2
+ 1(8) ERROR: <script>: TM_REPLY $xavp(server)[0]: myhost2 | myuser2 | 443
+ 1(8) ERROR: <script>: TM_REPLY $xavp(server)[1]: myhost | myuser | 443
+
+ 3(10) ERROR: <script>: Got a TM_REPLY 200 INVITE
+ 3(10) ERROR: <script>: TM_REPLY $avp(b): 3 (full stack: 3, 2, 1 )
+ 3(10) ERROR: <script>: TM_REPLY $avp(c): 3 (full stack: 3, 2, 1, 9 )
+ 3(10) ERROR: <script>: TM_REPLY $avp(c): 2 (full stack: 2, 1, 9 )
+ 3(10) ERROR: <script>: TM_REPLY $avp(c): 9 (full stack: 9 )
+
+ 3(10) ERROR: <script>: TM_REPLY $xavp(server): myhost2 myhost2 | count: 4
+ 3(10) ERROR: <script>: TM_REPLY $xavp(server)[0]: myhost2 | myuser2 | 443
+ 3(10) ERROR: <script>: TM_REPLY $xavp(server)[1]: myhost | myuser | 443
+```
+
+In this example we can see the stack behaviour of the avp and how the xavp work as structures.
+
+##### resources
+* [Wiki Pseudo-Variables Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/pseudovariables/)
+* [Wiki Core Cookbook](https://www.kamailio.org/wikidocs/cookbooks/devel/core/)
