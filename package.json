@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "astro": "^7.0.4",
-    "astro-papyrus": "github:marcelofpfelix/papyrus#0.2.4"
+    "astro-papyrus": "github:marcelofpfelix/papyrus#0.2.4",
+    "astro-papyrus-plugins": "github:marcelofpfelix/papyrus-plugins"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

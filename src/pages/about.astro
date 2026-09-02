@@ -1,6 +1,6 @@
 ---
 import { readFileSync } from "node:fs";
-import { PapyrusBaseLayout, loadPapyrusConfig, pageDescription, pageContent } from "astro-papyrus";
+import { PapyrusBaseLayout, loadPapyrusConfig, pageDescription, pageMetaDescription, pageContent } from "astro-papyrus";
 import { getTemplateProfile } from "astro-papyrus/template/profile";
 import { imageEffectClass, imageEffectStyle, isPapyrusImageEffect, type PapyrusImageEffect, withBase } from "astro-papyrus/utils";
 
@@ -15,6 +15,7 @@ const fastfetchConfig = Object.fromEntries(
 const site = await loadPapyrusConfig();
 const profile = await getTemplateProfile();
 const description = pageDescription(site, "about", site.description);
+const metaDescription = pageMetaDescription(site, "about", site.description);
 const content = pageContent(site, "about");
 const paragraphs = content?.split(/\n\s*\n/).map(paragraph => paragraph.trim()).filter(Boolean) ?? [];
 const brandMark = site.brandMark === "terminal" ? "terminal" : "twinkle";
@@ -51,7 +52,7 @@ const fastfetchSource: FastfetchRow[] = [
 const fastfetchRows = fastfetchSource.filter((row): row is [string, string | string[]] => Boolean(row[1]));
 ---
 
-<PapyrusBaseLayout title="About" description={description} siteTitle={site.title} brandTitle={site.brandTitle} brandMark={brandMark} showBrandTitle={site.showBrandTitle} defaultThemeProfile={site.defaultThemeProfile} defaultFontProfile={site.defaultFontProfile} nav={site.nav} socialLinks={site.socialLinks} features={site.features} googleVerification={site.googleVerification}>
+<PapyrusBaseLayout title="About" description={metaDescription} siteTitle={site.title} brandTitle={site.brandTitle} brandMark={brandMark} showBrandTitle={site.showBrandTitle} defaultThemeProfile={site.defaultThemeProfile} defaultFontProfile={site.defaultFontProfile} nav={site.nav} socialLinks={site.socialLinks} features={site.features} googleVerification={site.googleVerification}>
   <section class="papyrus-hero">
     <h1>About</h1>
     {description && <p class="papyrus-description">{description}</p>}

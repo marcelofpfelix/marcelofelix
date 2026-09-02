@@ -3,6 +3,7 @@ dist/
 .astro/
 .serena/
 .lighthouseci/
+.lighthouse/
 .DS_Store
 pnpm-debug.log*
 lhci-report/
