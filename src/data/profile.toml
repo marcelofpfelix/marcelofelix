@@ -17,6 +17,9 @@ roles = ["SW Eng (Backend | VoIP)", "DevOps (SRE | Cloud)"]
 pages = 2
 sections = ["profile", "experience", "skills", "education", "certifications", "organizations", "volunteering"]
 
+[user.public_keys]
+ssh = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDekgjItwF9Vjj+jldrsTg9PM/LnJDph5+X4EfsqXaJx4n4uOF+olk/pPfs5rxRK1PxZo+FVAXciaidwa7R1+KAm3/339+Ihqj3F1bpPgZggh/h7GEPLyg+TDl+w6NWC1lc+3fxdrGRRT9udtsjN/rxRL8h0Mx7cm4jX/E1Ql1uNgerjmqxdU7aYrEUbEilahN/2rvAZ8uYkG6Vn2Izn1XjySCewINc0eWun+Buvqau0d/QrJUVvnATKWfBesT56f2YnrPxHB/h+xoG093yHqUQD6koYtcDESOkqKd3ppmJteHIC4KY3lLTO8pT1l0cHkVI1BFuNx324ffMh/R/MQmr"
+
 [user.profile_tabs]
 timeline = false
 projects = false

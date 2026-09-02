@@ -13,10 +13,10 @@ importers:
         version: 7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0)
       astro-papyrus:
         specifier: github:marcelofpfelix/papyrus#0.2.4
-        version: https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0)
+        version: https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0)
       astro-papyrus-plugins:
         specifier: github:marcelofpfelix/papyrus-plugins
-        version: https://codeload.github.com/marcelofpfelix/papyrus-plugins/tar.gz/2fc5f69ee623d501ba94e406d91df8092ea887cd(astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0))(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))
+        version: https://codeload.github.com/marcelofpfelix/papyrus-plugins/tar.gz/2fc5f69ee623d501ba94e406d91df8092ea887cd(astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0))(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.9
@@ -1888,8 +1888,8 @@ packages:
       astro: '>=6.0.0'
       astro-papyrus: '>=0.2.4'
 
-  astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a:
-    resolution: {gitHosted: true, integrity: sha512-WzZ/BaLbD29KcduBC6nnADM8tD1J+GZI4sJzye4qK35+nhnjyEImiJIuwGuzyW3+rQw9ecAvEtCoteftWRyZuQ==, tarball: https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a}
+  astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e:
+    resolution: {gitHosted: true, integrity: sha512-CoUgdKQOB9MGmBlrggstyygZaIE6KC6PcYsXgWhWD4F4mEJbFr5fl6IMAvWNo1ZFGDK6jgN9gYDXfoqFKpPrrQ==, tarball: https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e}
     version: 0.2.4
     hasBin: true
     peerDependencies:
@@ -6440,14 +6440,14 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro-papyrus-plugins@https://codeload.github.com/marcelofpfelix/papyrus-plugins/tar.gz/2fc5f69ee623d501ba94e406d91df8092ea887cd(astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0))(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0)):
+  astro-papyrus-plugins@https://codeload.github.com/marcelofpfelix/papyrus-plugins/tar.gz/2fc5f69ee623d501ba94e406d91df8092ea887cd(astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0))(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       astro: 7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0)
-      astro-papyrus: https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0)
+      astro-papyrus: https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0)
       remark-emoji: 5.0.2
       unist-util-visit: 5.1.0
 
-  astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/14957da899914cc004c6cf752dce0157639fd13a(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0):
+  astro-papyrus@https://codeload.github.com/marcelofpfelix/papyrus/tar.gz/a5ad57dfb665e36004011be21081cf8fc75cd83e(@types/node@26.1.2)(astro@7.2.0(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.1.2)(jiti@2.7.0)(yaml@2.9.0))(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.62.4)(typescript@5.9.3)(vite@8.2.1(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0):
     dependencies:
       '@astrojs/markdown-remark': 7.2.2
       '@astrojs/rss': 4.0.19

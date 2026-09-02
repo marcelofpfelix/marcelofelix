@@ -50,6 +50,13 @@ const fastfetchSource: FastfetchRow[] = [
   ["CV", profile.canonicalCv ? new URL(profile.canonicalCv).pathname : withBase("/profile/")],
 ];
 const fastfetchRows = fastfetchSource.filter((row): row is [string, string | string[]] => Boolean(row[1]));
+const profilePublicKeys = (profile as typeof profile & {
+  publicKeys?: { ssh?: string; gpg?: string };
+}).publicKeys;
+const publicKeyLinks = [
+  profilePublicKeys?.ssh ? { label: "SSH", href: "/profile.keys" } : undefined,
+  profilePublicKeys?.gpg ? { label: "GPG", href: "/profile.gpg" } : undefined,
+].filter((key): key is { label: string; href: string } => Boolean(key));
 ---
 
 <PapyrusBaseLayout title="About" description={metaDescription} siteTitle={site.title} brandTitle={site.brandTitle} brandMark={brandMark} showBrandTitle={site.showBrandTitle} defaultThemeProfile={site.defaultThemeProfile} defaultFontProfile={site.defaultFontProfile} nav={site.nav} socialLinks={site.socialLinks} features={site.features} googleVerification={site.googleVerification}>
@@ -102,6 +109,17 @@ const fastfetchRows = fastfetchSource.filter((row): row is [string, string | str
       </a>
     </p>
   </section>
+
+  {publicKeyLinks.length > 0 && (
+    <section class="papyrus-section about-keys">
+      <h2>Public keys</h2>
+      <ul class="about-key-list">
+        {publicKeyLinks.map(key => (
+          <li><a href={withBase(key.href)}>{key.label} public key</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
 </PapyrusBaseLayout>
 
 <style>
@@ -251,6 +269,21 @@ const fastfetchRows = fastfetchSource.filter((row): row is [string, string | str
     width: 1rem;
   }
 
+  .about-key-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .about-key-list a {
+    color: var(--papyrus-accent);
+    font-family: var(--papyrus-font-mono);
+    font-size: 0.875rem;
+  }
+
   @media (max-width: 640px) {
     .about-fastfetch {
       font-size: 0.72rem;
@@ -289,6 +322,7 @@ const fastfetchRows = fastfetchSource.filter((row): row is [string, string | str
     .about-actions {
       justify-content: center;
     }
+
   }
 
   @media (max-width: 340px) {
